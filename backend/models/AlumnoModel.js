@@ -1,6 +1,6 @@
-const {connection} = require("../config/dbconfig");
+const {conexion} = require("../database/dbConnection");
 const util = require("util");
-const query = util.promisify(connection.query).bind(connection);
+const query = util.promisify(conexion.query).bind(conexion);
 
 class AlumnoModel {
     /*    enrollCourse(student_id, course_id) {
@@ -41,5 +41,5 @@ class AlumnoModel {
     }
 }
 
-AlumnoModel = new AlumnoModel();
-module.exports = AlumnoModel;
+alumnoModel = new AlumnoModel();
+module.exports = alumnoModel;

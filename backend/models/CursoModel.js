@@ -1,6 +1,6 @@
-const {connection} = require("../config/dbconfig");
+const {conexion} = require("../database/dbConnection");
 const util = require("util");
-const query = util.promisify(connection.query).bind(connection);
+const query = util.promisify(conexion.query).bind(conexion);
 
 class CursoModel {
 
@@ -56,5 +56,5 @@ class CursoModel {
 
 }
 
-CursoModel = new CursoModel();
-module.exports = CursoModel;
+cursoModel = new CursoModel();
+module.exports = cursoModel;
