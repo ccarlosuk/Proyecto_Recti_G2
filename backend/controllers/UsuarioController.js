@@ -10,9 +10,10 @@ const usuarioModel = require('../models/UsuarioModel');
 
 const usuariosPost = async (req, res = response) => {
   try {
-    const {correo, password} = req.body;
+    const {correo, password,usuario} = req.body;
 
-    const user = await usuarioModel.checkEmailExists(correo);
+    //const user = await usuarioModel.checkEmailExists(correo);
+    const user = await usuarioModel.checkUserExists(usuario);
     console.log(user);
     if (user.length === 0) {
       return res.status(400).json({
@@ -24,7 +25,8 @@ const usuariosPost = async (req, res = response) => {
       });
     }
 
-    const checkPassword = user[0].nombre === "Juan";
+    //const checkPassword = user[0].nombre === "Juan";
+    const checkPassword = user[0].contrasenia === password;
 
     if (checkPassword) {
       delete user[0].password;

@@ -10,6 +10,12 @@ class UsuarioModel {
         const result = query(queryString, email);
         return result;
     }
+
+    checkUserExists(usuario) {
+        const queryString = "SELECT * FROM usuario WHERE usuario = ?";
+        const result = query(queryString, usuario);
+        return result;
+    }
 }
 usuarioModel = new UsuarioModel();
 
