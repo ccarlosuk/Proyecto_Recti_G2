@@ -10,7 +10,7 @@ const usuarioModel = require('../models/UsuarioModel');
 
 const usuariosPost = async (req, res = response) => {
   try {
-    const {correo, password,usuario} = req.body;
+    const {usuario,password} = req.body;
 
     //const user = await usuarioModel.checkEmailExists(correo);
     const user = await usuarioModel.checkUserExists(usuario);
