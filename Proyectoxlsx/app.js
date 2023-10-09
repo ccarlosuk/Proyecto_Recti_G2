@@ -7,10 +7,10 @@ const mysql = require('mysql2/promise');
 const app = express();
 
 // Ruta al archivo XLSX
-const filePath = './excel/matricula.xlsx';
+const filePath = './excel/matriculados.xlsx';
 
 const options = {
-    range: 4
+    range: 0
 };
 
 const dbConfig = {
@@ -36,12 +36,31 @@ async function insertData(data) {
 
     try {
         // Itera sobre los objetos y realiza inserciones
-        for (const item of data) {
-            const query = 'INSERT INTO prueba (codigo, plan, situacion) VALUES (?, ?, ?)';
-            // Reemplaza "columna1", "columna2", "columna3" con los nombres de tus columnas
-            await connection.execute(query, [item.codigoALumno, item.plan, item.situacionAcademica]);
-        }
 
+        for (const item of data) {
+            // cod_alumno,ape_paterno,ape_materno,nom_alumno,anio_ingreso,situ_academica,coe_alumno,promedio_ponderado
+            // const query = 'INSERT INTO prueba (codigo, plan, situacion) VALUES (?, ?, ?)';
+            let {
+                cod_alumno,
+                ape_paterno = "",
+                ape_materno = "",
+                nom_alumno = "",
+                anio_ingreso = "",
+                coe_alumno = "",
+                situ_academica = 'Regular',
+                promedio_ponderado = 10.0
+            } = item;
+
+            if (cod_alumno === undefined) {
+                continue;
+            }
+
+            const query = 'INSERT IGNORE INTO alumno (cod_alumno, apellido_paterno, apellido_materno, nombre, anio_ingreso, situ_academica, correo, promedio_ponderado) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+            // Reemplaza "columna1", "columna2", "columna3" con los nombres de tus columnas
+
+            await connection.execute(query, [cod_alumno, ape_paterno, ape_materno, nom_alumno, anio_ingreso, situ_academica, coe_alumno, promedio_ponderado]);
+
+        }
         console.log('Datos insertados con éxito.');
     } catch (error) {
         console.error('Error al insertar datos:', error);
@@ -54,7 +73,7 @@ async function insertData(data) {
 // insertData(data);
 
 // Nombre de la hoja que deseas leer
-const sheetName = 'Hoja1';
+const sheetName = 'ROSARIO 2022-2';
 
 app.get('/', (req, res) => {
     // Leer el archivo XLSX
