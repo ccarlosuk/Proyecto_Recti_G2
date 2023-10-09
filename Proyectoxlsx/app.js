@@ -2,7 +2,7 @@ const express = require('express');
 const XLSX = require('xlsx');
 const fs = require('node:fs');
 const iconv = require('iconv-lite');
-const mysql = require('mysql2/promise');
+const { insertData } = require('./db.js');
 
 const app = express();
 
@@ -12,62 +12,6 @@ const filePath = './excel/matriculados.xlsx';
 const options = {
     range: 0
 };
-
-const dbConfig = {
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'test',
-};
-
-// Conecta a la base de datos
-async function connectToDatabase() {
-    try {
-        const connection = await mysql.createConnection(dbConfig);
-        return connection;
-    } catch (error) {
-        throw error;
-    }
-}
-
-// Inserta los datos en la tabla
-async function insertData(data) {
-    const connection = await connectToDatabase();
-
-    try {
-        // Itera sobre los objetos y realiza inserciones
-
-        for (const item of data) {
-            // cod_alumno,ape_paterno,ape_materno,nom_alumno,anio_ingreso,situ_academica,coe_alumno,promedio_ponderado
-            // const query = 'INSERT INTO prueba (codigo, plan, situacion) VALUES (?, ?, ?)';
-            let {
-                cod_alumno,
-                ape_paterno = "",
-                ape_materno = "",
-                nom_alumno = "",
-                anio_ingreso = "",
-                coe_alumno = "",
-                situ_academica = 'Regular',
-                promedio_ponderado = 10.0
-            } = item;
-
-            if (cod_alumno === undefined) {
-                continue;
-            }
-
-            const query = 'INSERT IGNORE INTO alumno (cod_alumno, apellido_paterno, apellido_materno, nombre, anio_ingreso, situ_academica, correo, promedio_ponderado) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
-            // Reemplaza "columna1", "columna2", "columna3" con los nombres de tus columnas
-
-            await connection.execute(query, [cod_alumno, ape_paterno, ape_materno, nom_alumno, anio_ingreso, situ_academica, coe_alumno, promedio_ponderado]);
-
-        }
-        console.log('Datos insertados con éxito.');
-    } catch (error) {
-        console.error('Error al insertar datos:', error);
-    } finally {
-        connection.close();
-    }
-}
 
 // Llama a la función para insertar los datos
 // insertData(data);
@@ -89,6 +33,7 @@ app.get('/', (req, res) => {
         console.log('Lectura de archivo xlsx exitosa');
         console.log(data.length);
     }
+
     insertData(data);
     res.send(data);
 });
