@@ -19,7 +19,7 @@ const usuariosPost = async (req, res = response) => {
       return res.status(400).json({
         errors: [
           {
-            msg: "Correo o contrasenia no encontrado !!",
+            msg: "Correo o contraseña no encontrado !!",
           },
         ],
       });
@@ -56,7 +56,7 @@ const usuariosPost = async (req, res = response) => {
     res.status(400).json({
       errors: [
         {
-          msg: "Email or Password Not Found !",
+          msg: "Correo o contraseña no encontrado !!",
         },
       ],
     });
@@ -66,7 +66,9 @@ const usuariosPost = async (req, res = response) => {
   }
 
 }
+const usuarioGet = async (req, res = responde) => {
 
+}
 
 /*
 

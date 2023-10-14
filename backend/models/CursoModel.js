@@ -2,7 +2,7 @@ const {conexion} = require("../database/dbConnection");
 const util = require("util");
 const query = util.promisify(conexion.query).bind(conexion);
 
-class CursoModel {
+class CursoModel {//Asignatura
 
     //LIST
     getCourses() {

@@ -40,6 +40,7 @@ class Server {
     //ROUTES = RUTAS
     routes(){
         this.app.use(this.loginRoutePath,require('../routes/login.routes'));
+        //this.app.use('/recti',require('../routes/recti.routes'));
     }
 
     listen(){

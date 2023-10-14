@@ -42,4 +42,18 @@ class AlumnoModel {
 }
 
 alumnoModel = new AlumnoModel();
+/*const respuesta = async () => {
+    try {
+        const listCursos = await alumnoModel.getAlumnoCursos('juan.ayma@unmsm.edu.pe');
+        if (listCursos.length === 0) {
+            console.log('fail');
+        } else {
+            console.log('ok');
+        }
+    } catch (error) {
+        console.error('Error en la consulta a la base de datos:', error);
+    }
+};
+respuesta();*/
+
 module.exports = alumnoModel;
