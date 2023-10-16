@@ -19,6 +19,7 @@ async function connectToDatabase() {
     }
 }
 let i = 0;
+
 // Inserta los datos en la tabla
 async function insertData(data) {
     const connection = await connectToDatabase();
@@ -45,12 +46,12 @@ async function insertData(data) {
             }
 
             const passwordHashed = bcrypt.hashSync(cod_alumno, 2);
-            console.log('hasheado');
+            // console.log('hasheado');
             const query = 'INSERT IGNORE INTO alumno (cod_alumno, apellido_paterno, apellido_materno, nombre, anio_ingreso, situ_academica, correo, promedio_ponderado,password) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?)';
             // Reemplaza "columna1", "columna2", "columna3" con los nombres de tus columnas
 
             await connection.execute(query, [cod_alumno, ape_paterno, ape_materno, nom_alumno, anio_ingreso, situ_academica, coe_alumno, promedio_ponderado, passwordHashed]);
-            console.log(++i);
+            // console.log(++i);
         }
         console.log('Datos insertados con éxito.');
     } catch (error) {
@@ -60,4 +61,43 @@ async function insertData(data) {
     }
 }
 
-module.exports.insertData = insertData;
+
+async function insertAsignaturas(data) {
+    const connection = await connectToDatabase();
+
+    try {
+        // Itera sobre los objetos y realiza inserciones
+
+        for (const item of data) {
+            // cod_alumno,ape_paterno,ape_materno,nom_alumno,anio_ingreso,situ_academica,coe_alumno,promedio_ponderado
+            // const query = 'INSERT INTO prueba (codigo, plan, situacion) VALUES (?, ?, ?)';
+            let {
+                cod_asignatura,
+                des_asignatura = "",
+                num_creditaje = "",
+                cod_seccion = "",
+                num_ciclo_ano_asig = 0
+            } = item;
+
+            if (cod_asignatura === undefined) {
+                continue;
+            }
+
+            const query = 'INSERT IGNORE INTO asignaturas (cod_asignatura, nombre, creditaje, grupo, ciclo_asignatura) VALUES (?, ?, ?, ?, ?)';
+            // Reemplaza "columna1", "columna2", "columna3" con los nombres de tus columnas
+
+            await connection.execute(query, [cod_asignatura, des_asignatura, num_creditaje, cod_seccion, num_ciclo_ano_asig]);
+            // console.log(++i);
+        }
+        console.log('Asignaturas insertadas con éxito.');
+    } catch (error) {
+        console.error('Error al insertar datos:', error);
+    } finally {
+        connection.close();
+    }
+}
+
+module.exports = {
+    insertData: insertData,
+    insertAsignaturas: insertAsignaturas
+}
