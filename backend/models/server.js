@@ -3,13 +3,11 @@ const cors = require("cors");
 const path = require("path");
 const dbConnection = require("../database/dbConnection");
 
-
-
 class Server {
     constructor() {
         this.app = express();
         this.port = process.env.PORT;
-        this.loginRoutePath = '/login';
+        this.loginRoutePath = "/login";
 
         //CONECTAR A LA BASE DE DATOS
         this.conectarDB();
@@ -21,31 +19,34 @@ class Server {
         this.routes();
     }
 
-    async conectarDB(){
+    async conectarDB() {
         await dbConnection;
     }
 
-    middlewares(){
+    middlewares() {
         //CORS
-        this.app.use( cors() );
+        this.app.use(cors());
 
         //LECTURA Y PARSEO DEL BODY
-        this.app.use( express.json() );
+        this.app.use(express.json());
 
         //Directorio público '/'
-        this.app.use( express.static('./public') );
+        this.app.use(express.static("./public"));
         //this.app.use(  express.static(path.join(__dirname, '../public')) );
     }
 
     //ROUTES = RUTAS
-    routes(){
-        this.app.use(this.loginRoutePath,require('../routes/login.routes'));
+    routes() {
+        this.app.use(this.loginRoutePath, require("../routes/login.routes"));
         //this.app.use('/recti',require('../routes/recti.routes'));
+        this.app.use("/api/alumnos", require("../routes/recti.routes"));
     }
 
-    listen(){
+    listen() {
         this.app.listen(this.port, () => {
-            console.log(`Servidor corriendo en el puerto http://localhost:${this.port}`)
+            console.log(
+                `Servidor corriendo en el puerto http://localhost:${this.port}`
+            );
         });
     }
 }

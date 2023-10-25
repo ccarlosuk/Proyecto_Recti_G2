@@ -1,16 +1,32 @@
-const {conexion} = require("../database/dbConnection");
+const conexion = require("../database/dbConnection");
 const util = require("util");
 const query = util.promisify(conexion.query).bind(conexion);
 
-class AlumnoModel {
-    /*    enrollCourse(student_id, course_id) {
+const getAll = async () => {
+    const result = await query("SELECT * FROM alumno");
+    return result;
+};
+
+const getById = async (id) => {
+    const queryString = "SELECT * FROM alumno WHERE cod_alumno = ?";
+    const result = await query(queryString, [id]);
+    return result;
+};
+
+module.exports.AlumnoModel = {
+    getAll,
+    getById,
+};
+
+/* class AlumnoModel {
+    enrollCourse(student_id, course_id) {
             const queryString = "INSERT INTO studentcourse SET ?";
             const result = query(queryString, {
                 course_id: course_id,
                 student_id: student_id,
             });
             return result;
-        }*/
+        }
     getAlumnoCursos(alumno_id) {
         const queryString = `SELECT c.name AS CourseName,c.code,s.grade,u.name as InstructorName 
             FROM course c
@@ -42,7 +58,7 @@ class AlumnoModel {
 }
 
 alumnoModel = new AlumnoModel();
-/*const respuesta = async () => {
+const respuesta = async () => {
     try {
         const listCursos = await alumnoModel.getAlumnoCursos('juan.ayma@unmsm.edu.pe');
         if (listCursos.length === 0) {
@@ -54,6 +70,6 @@ alumnoModel = new AlumnoModel();
         console.error('Error en la consulta a la base de datos:', error);
     }
 };
-respuesta();*/
+respuesta();
 
-module.exports = alumnoModel;
+module.exports = alumnoModel; */

@@ -1,14 +1,14 @@
 const mysql = require("mysql2");
 const util = require("util");
-require('dotenv').config({path:'../.env'}) //PARA QUE SE LEAN LAS VARIABLES DE ENTORNO EN LA RAIZ
+require("dotenv").config({ path: "../.env" }); //PARA QUE SE LEAN LAS VARIABLES DE ENTORNO EN LA RAIZ
 //require('dotenv').config({path:'relative/path/to/your/.env'})
 
 //CREACIÓN DE LA CONEXIÓN A LA BD
 const dbConnection = mysql.createConnection({
-            host: process.env.DB_HOST,//'34.176.134.58',
-            database: process.env.DB_NAME,
-            user: process.env.DB_USER,
-            password: process.env.DB_PASSWORD//process.env.DB_PASSWORD,//'1234',
+    host: process.env.DB_HOST, //'34.176.134.58',
+    database: process.env.DB_NAME,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD, //process.env.DB_PASSWORD,//'1234',
 });
 dbConnection.connect((error) => {
     if (error) {
@@ -20,4 +20,4 @@ dbConnection.connect((error) => {
 //cambia conexion.query a la sintaxis async await
 const query = util.promisify(dbConnection.query).bind(dbConnection);
 
-module.exports = query;
+module.exports = dbConnection;
