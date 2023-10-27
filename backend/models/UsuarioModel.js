@@ -1,8 +1,5 @@
 const query = require("../database/dbConnection");
 
-//const util = require("util");
-//const query = util.promisify(conexion.query).bind(conexion);
-
 class UsuarioModel {
 
     checkEmailExists(email) {
@@ -36,4 +33,5 @@ const respuesta = async () => {
 
 respuesta();
 //-------------------------------------------------*/
+
 module.exports = usuarioModel;

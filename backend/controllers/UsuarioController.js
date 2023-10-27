@@ -1,140 +1,54 @@
-/*const cursoModel = require("../models/CursoModel");
-const usuarioModel = require("../models/UsuarioModel");
-const bcrypt = require("bcrypt");
-const { validationResult } = require("express-validator");*/
-
 const { request,response } = require('express');
 const bcryptjs = require('bcryptjs');
+const jwt = require('jsonwebtoken')
+const createAccessToken = require("../lib/jwt");
+require('dotenv').config({path: '../.env'})
 
 const usuarioModel = require('../models/UsuarioModel');
+const TOKEN_SECRET = process.env.TOKEN_SECRET;
 
-const usuariosPost = async (req, res = response) => {
-  try {
-    const {usuario,password} = req.body;
-
-    //const user = await usuarioModel.checkEmailExists(correo);
-    const user = await usuarioModel.checkUserExists(usuario);
-    console.log(user);
-    if (user.length === 0) {
-      return res.status(400).json({
-        errors: [
-          {
-            msg: "Correo o contraseña no encontrado !!",
-          },
-        ],
+const usuariosPost = {
+  register: async (req, res = response) => {
+    const {email, password, username} = req.body;
+    try{
+      //ENCRIPTAR LA CONTRASEÑA
+      const salt = bcryptjs.genSaltSync(10);
+      const pass = bcryptjs.hashSync(password,salt);
+      const newUser = new User ({
+        username,
+        email,
+        password: pass
       });
-    }
+      //GUARDAR EL NUEVO USUARIO
+      const userSaved = await newUser.save();
 
-    //const checkPassword = user[0].nombre === "Juan";
-    const checkPassword = user[0].contrasenia === password;
-
-    if (checkPassword) {
-      delete user[0].password;
-      return res.status(200).json(user[0]);
-    }
-
-    /*if (user[0].status === 0) {
-      return res.status(400).json({
-        errors: [
-          {
-            msg: "You Are BLOCKED From The System, Please Contact The Admin ",
-          },
-        ],
-      });
-    }*/
-    //NOMBRE
-    /*const checkPassword =
-        user[0].type === "Admin"
-            ? password === user[0].password
-            : await bcrypt.compare(password, user[0].password);
-
-    if (checkPassword) {
-      delete user[0].password;
-      return res.status(200).json(user[0]);
-    }*/
-
-    res.status(400).json({
-      errors: [
-        {
-          msg: "Correo o contraseña no encontrado !!",
-        },
-      ],
-    });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({err: err});
-  }
-
-}
-const usuarioGet = async (req, res = responde) => {
-
-}
-
-/*
-
-  const {correo,password} = req.body;
-
-  //VERIFICAR SI EL CORREO EXISTE
-  const existeEmail = await Usuario.checkEmailExists(correo);
-  if (existeEmail){
-    return res.status(400).json({
-      msg: 'Este correo ya está registrado'
-    });
-  }
-
-  //ENCRIPTAR LA CONTRASEÑA
-  const salt = bcryptjs.genSaltSync(10);
-  const pass = bcryptjs.hashSync(password,salt);
-
-  //GUARDAR EN BD
-  await usuario.save();
-
-  res.json({
-    message: 'post API - controlador',
-    /!*nombre,
-    edad*!/
-    usuario
-  });
-};
-
-*/
-
-
-
-/*
-const usuarioController = {
-  //LISTAR LOS CURSOS MATRICULADOS
-  viewActiveCourses: async (req, res) => {
-    try {
-      const queryResult = await cursoModel.getActiveCourses();
-      res.status(200).json(queryResult);
-    } catch (err) {
-      res.status(404).json(err);
+      jwt.sign({
+        id:userSaved._id
+      })
+    }catch (error) {
+      console.log(error);
     }
   },
 
-  login: async (req, res) => {
+  login: async (req, res = response) => {
     try {
-      const loginData = req.body;
+      const {usuario,password} = req.body;
 
-      const errors = validationResult(req);
+      //OBTENER EL ARREGLO DE USUARIOS DE ACUERDO AL USUARIO
+      const userFound = await usuarioModel.checkUserExists(usuario);
 
-      if (!errors.isEmpty()) {
-        return res.status(422).json({ errors: errors.array() });
-      }
+      console.log(userFound);
 
-      const user = await usuarioModel.checkEmailExists(loginData.email);
-
-      if (user.length === 0) {
+      if (userFound.length === 0) {
         return res.status(400).json({
           errors: [
             {
-              msg: "Correo o contrasenia no encontrado !!",
+              msg: "Usuario no encontrado !!",
             },
           ],
         });
       }
-
+      /*//BLOQUEO DEL SISTEMA
       if (user[0].status === 0) {
         return res.status(400).json({
           errors: [
@@ -143,34 +57,113 @@ const usuarioController = {
             },
           ],
         });
+      }*/
+
+      //COMPARAR CONTRASEÑA
+      //const isMatch = await bcrypt.compare(password,userFound[0].contrasenia);
+      const isMatch = true;
+      if (!isMatch){
+        return res.status(400).json({
+          message: [
+              'La constraseña es incorrecta'
+          ],
+        });
       }
 
+      //CREAR TOKEN DE ACCESO USANDO LOS DATOS DE LA BD
+      const token = await createAccessToken({
+        id: userFound[0].id_usuario,
+        username: userFound[0].usuario,
+      });
+
+      res.cookie("token", token, {
+        httpOnly: process.env.NODE_ENV !== "development",
+        secure: true,
+        sameSite: "none",
+      });
+
+      res.json({
+        id: userFound[0].id_usuario,
+        username: userFound[0].usuario,
+        constrasenia: userFound[0].contrasenia,
+        token: token
+      });
+
+      /*
       const checkPassword =
-        user[0].type === "admin"
-          ? loginData.password === user[0].password
-          : await bcrypt.compare(loginData.password, user[0].password);
-
+          userFound[0].id_rol === 1 //Estudiante
+              ? password === userFound[0].password //
+              : await bcrypt.compare(password,userFound[0].contrasenia);//
+      //--------------JWT---------------
       if (checkPassword) {
-        delete user[0].password;
-        return res.status(200).json(user[0]);
-      }
 
-      res.status(400).json({
+        //CREAR TOKEN DE ACCESO USANDO LOS DATOS DE LA BD
+        const token = await createAccessToken({
+          id: userFound[0].id_usuario,
+          username: userFound[0].usuario,
+        });
+
+        res.cookie("token", token, {
+          httpOnly: process.env.NODE_ENV !== "development",
+          secure: true,
+          sameSite: "none",
+        });
+
+        res.json({
+          id: userFound[0].id_usuario,
+          username: userFound[0].usuario,
+          constrasenia: userFound[0].contrasenia,
+        });
+
+
+        delete userFound[0].password;
+        return res.status(200).json(userFound[0]);
+      }
+      */
+      /*res.status(400).json({
         errors: [
           {
-            msg: "Email or Password Not Found !",
+            msg: "Usuario o contraseña no encontrado !!",
           },
         ],
-      });
+      });*/
     } catch (err) {
       console.log(err);
-      res.status(500).json({ err: err });
+      res.status(500).json({msg: err.message});
     }
   },
-};
-*/
 
-//module.exports = usuarioController;
+  /*verificarToken : async (req, res) => {
+    const { token } = req.cookies;
+    if (!token) return res.send(false);
+
+    jwt.verify(token, TOKEN_SECRET, async (error, user) => {
+      if (error) return res.sendStatus(401);
+
+      //const userFound = await User.findById(user.id);
+      //OBTENER EL ARREGLO DE USUARIOS DE ACUERDO AL USUARIO (PAYLOAD)
+      const userFound = await usuarioModel.checkUserExists(user.id);
+
+      if (user.length === 0) return res.sendStatus(401);
+
+      return res.json({
+        id: user[0].id_usuario,
+        username: user[0].usuario,
+        constrasenia: user[0].contrasenia,
+      });
+    });
+  },*/
+
+  logout: async (req, res) => {
+    res.cookie("token", "", {
+      httpOnly: true,
+      secure: true,
+      expires: new Date(0),
+    });
+    return res.sendStatus(200);
+  }
+}
+
 module.exports ={
   usuariosPost
 };

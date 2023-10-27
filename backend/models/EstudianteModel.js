@@ -2,7 +2,7 @@ const {conexion} = require("../database/dbConnection");
 const util = require("util");
 const query = util.promisify(conexion.query).bind(conexion);
 
-class AlumnoModel {
+class EstudianteModel {
     /*    enrollCourse(student_id, course_id) {
             const queryString = "INSERT INTO studentcourse SET ?";
             const result = query(queryString, {
@@ -41,7 +41,7 @@ class AlumnoModel {
     }
 }
 
-alumnoModel = new AlumnoModel();
+alumnoModel = new EstudianteModel();
 /*const respuesta = async () => {
     try {
         const listCursos = await alumnoModel.getAlumnoCursos('juan.ayma@unmsm.edu.pe');
