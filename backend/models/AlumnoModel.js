@@ -1,14 +1,33 @@
-const conexion = require("../database/dbConnection");
-const util = require("util");
-const query = util.promisify(conexion.query).bind(conexion);
+const query = require("../database/dbConnection");
 
 const getAll = async () => {
-    const result = await query("SELECT * FROM alumno");
+    const result = await query(
+        "SELECT cod_alumno, nombre, apellido_paterno, apellido_materno, correo, situ_academica FROM alumno"
+    );
     return result;
 };
 
 const getById = async (id) => {
-    const queryString = "SELECT * FROM alumno WHERE cod_alumno = ?";
+    const queryString = `
+        SELECT  a.cod_alumno,
+                a.nombre,
+                a.apellido_paterno,
+                a.apellido_materno,
+                a.correo,
+                a.situ_academica,
+                p_a.plan_asignatura AS plan_academico,
+                p_a.escuela,
+                (
+                    SELECT SUM(asig.creditaje)
+                    FROM asignatura asig, alumno a, alumno_seccion a_s
+                    WHERE a.cod_alumno = a_s.cod_alumno
+                    AND asig.cod_asignatura = a_s.cod_asignatura
+                ) AS total_cred_matr
+        FROM alumno a
+        JOIN alumno_seccion a_s ON a.cod_alumno = a_s.cod_alumno
+        JOIN plan_academico p_a ON a_s.cod_asignatura = p_a.cod_asignatura
+        WHERE a.cod_alumno = ?
+        LIMIT 1`;
     const result = await query(queryString, [id]);
     return result;
 };

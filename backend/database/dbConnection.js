@@ -20,4 +20,4 @@ dbConnection.connect((error) => {
 //cambia conexion.query a la sintaxis async await
 const query = util.promisify(dbConnection.query).bind(dbConnection);
 
-module.exports = dbConnection;
+module.exports = query;
