@@ -32,7 +32,7 @@ class Server {
         //LECTURA Y PARSEO DEL BODY
         this.app.use( express.json() );
         //LECTURA Y PARSEO DE LAS COOKIES ENVIADAS DESDE EL CLIENTE
-        this.app.use(cookieParser());
+        this.app.use( cookieParser() );
 
         //Directorio público '/'
         this.app.use( express.static('./public') );
@@ -45,6 +45,7 @@ class Server {
         this.app.use(this.mainRoutePath,require('../routes/usuario.routes'));
         //RUTA DE ESTUDIANTE
         this.app.use(this.mainRoutePath,require('../routes/estudiante.routes'));
+        //RUTA DE DIRECTOR DE ESCUELA
 
     }
 

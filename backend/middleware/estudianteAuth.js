@@ -6,7 +6,7 @@ const EstudianteAuth = async (req, res, next) => {
          FROM USUARIO as u
                   JOIN ROL as r ON u.ID_ROL = r.ID_ROL
          WHERE u.id_usuario = ? AND r.NOMBRE_ROL= 'ESTUDIANTE';`,
-        [req.user.id]
+        [req.user.name]
     );
     if(estudiante[0]){
         next();
