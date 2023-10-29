@@ -5,15 +5,6 @@ const { AlumnoModel } = require("../models/AlumnoModel");
 const { Response } = require("../common/response");
 
 module.exports.AlumnoController = {
-    getAlumnos: async (req, res) => {
-        try {
-            let alumnos = await AlumnoModel.getAll();
-            Response.success(res, 200, "Lista de alumnos", alumnos);
-        } catch (error) {
-            debug(error);
-            Response.error(res);
-        }
-    },
     getAlumno: async (req, res) => {
         try {
             const {
