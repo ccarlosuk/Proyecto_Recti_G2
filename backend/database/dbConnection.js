@@ -19,5 +19,15 @@ dbConnection.connect((error) => {
 
 //cambia conexion.query a la sintaxis async await
 const query = util.promisify(dbConnection.query).bind(dbConnection);
-
+/*const query = (sql, values) => {
+    return new Promise((resolve, reject) => {
+        dbConnection.query(sql, values, (error, results) => {
+            if (error) {
+                reject(`${error.name}: ${error.message}`);
+            } else {
+                resolve(results);
+            }
+        });
+    });
+};*/
 module.exports = query;

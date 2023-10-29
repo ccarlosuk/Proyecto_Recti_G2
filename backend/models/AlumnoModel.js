@@ -1,12 +1,5 @@
 const query = require("../database/dbConnection");
 
-const getAll = async () => {
-    const result = await query(
-        "SELECT cod_alumno, nombre, apellido_paterno, apellido_materno, correo, situ_academica FROM alumno"
-    );
-    return result;
-};
-
 const getById = async (id) => {
     const queryString = `
         SELECT  a.cod_alumno,
@@ -32,8 +25,7 @@ const getById = async (id) => {
     return result;
 };
 
-module.exports.AlumnoModel = {
-    getAll,
+module.exports.AlumnoModel = {    
     getById,
 };
 
