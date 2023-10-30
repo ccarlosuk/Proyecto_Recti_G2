@@ -7,7 +7,7 @@ require('dotenv').config({path: '../.env'})
 const usuarioModel = require('../models/UsuarioModel');
 const TOKEN_SECRET = process.env.TOKEN_SECRET;
 
-const usuariosPost = {
+const UsuarioController = {
   register: async (req, res = response) => {
     const {email, password, username} = req.body;
     try{
@@ -37,7 +37,7 @@ const usuariosPost = {
       //OBTENER EL ARREGLO DE USUARIOS DE ACUERDO AL USUARIO
       const userFound = await usuarioModel.checkUserExists(usuario);
 
-      console.log(userFound);
+      console.log(userFound[0]);
 
       if (userFound.length === 0) {
         return res.status(400).json({
@@ -165,5 +165,5 @@ const usuariosPost = {
 }
 
 module.exports ={
-  usuariosPost
+  UsuarioController
 };

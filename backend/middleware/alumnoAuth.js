@@ -1,5 +1,5 @@
 const query = require("../database/dbConnection");
-const EstudianteAuth = async (req, res, next) => {
+const AlumnoAuth = async (req, res, next) => {
     //console.log(req.user.id);
     const estudiante = await query(
         `SELECT u.id_usuario, u.usuario, r.nombre_rol
@@ -15,4 +15,4 @@ const EstudianteAuth = async (req, res, next) => {
     }
 };
 
-module.exports = EstudianteAuth;
+module.exports = AlumnoAuth;

@@ -1,24 +1,47 @@
-const createError = require("http-errors");
 const debug = require("debug")("app:module-users-controller");
 
-const { AlumnoModel } = require("../models/AlumnoModel");
-const { Response } = require("../common/response");
+const alumnoModel = require("../models/AlumnoModel");
+const {response, request} = require("express");
+const usuarioModel = require("../models/UsuarioModel");
 
-module.exports.AlumnoController = {
-    getAlumno: async (req, res) => {
+const AlumnoController = {
+    //GET
+    getAlumno: async (req = request, res = response) => {
         try {
-            const {
-                params: { id },
-            } = req;
-            let alumno = await AlumnoModel.getById(id);
+            const { id } = req.params;
+            console.log(id);
+            let alumno = await alumnoModel.getById(id);
+            console.log(alumno);
+
             if (!alumno || alumno.length === 0) {
-                Response.error(res, new createError.NotFound());
+                return res.status(404).json("Alumno no existe");
             } else {
-                Response.success(res, 200, `Alumno ${id} `, alumno);
+                return res.status(200).json({
+                    id,
+                    alumno
+                });
             }
         } catch (error) {
             debug(error);
-            Response.error(res);
+            res.status(404).json({msg: error.message});
         }
     },
-};
+    verCursosDelAlumno: async (req = request, res = response) => {
+        try {
+            const alumno = req.query.user;// ?id=${alumnoID} en el frontEnd
+            //Crear en model una funcion para obtener al alumno de acuerdo a su id
+            const userFound = await usuarioModel.checkUserExists(alumno);
+
+            res.status(200).json({
+                id: userFound[0].id_usuario,
+                username: userFound[0].usuario,
+                constrasenia: userFound[0].contrasenia,
+            });
+
+        }catch (err) {
+            console.log(err);
+            res.status(500).json({msg: err.message});
+        }
+    }
+}
+module.exports = AlumnoController;

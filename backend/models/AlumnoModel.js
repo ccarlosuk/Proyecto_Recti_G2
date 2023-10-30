@@ -1,7 +1,10 @@
 const query = require("../database/dbConnection");
 
-const getById = async (id) => {
-    const queryString = `
+//DEFINICION DE LA CLASE ALUMNOMODEL
+class AlumnoModel {
+    //FUNCION OBTENER DATOS DEL ESTUDIANTE
+    getById(id) {
+        const queryString = `
         SELECT  a.cod_alumno,
                 a.nombre,
                 a.apellido_paterno,
@@ -21,13 +24,18 @@ const getById = async (id) => {
         JOIN plan_academico p_a ON a_s.cod_asignatura = p_a.cod_asignatura
         WHERE a.cod_alumno = ?
         LIMIT 1`;
-    const result = await query(queryString, [id]);
-    return result;
-};
+        const result = query(queryString, id);
+        return result;
+    }
 
-module.exports.AlumnoModel = {    
-    getById,
-};
+    getCursosMatriculados(id) {
+
+    }
+}
+//SE INSTANCIA EL OBJETO DE LA CLASE ALUMNOMODEL
+alumnoModel = new AlumnoModel();
+
+module.exports = alumnoModel;
 
 /* class AlumnoModel {
     enrollCourse(student_id, course_id) {

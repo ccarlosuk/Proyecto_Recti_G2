@@ -43,7 +43,7 @@ class Server {
         //RUTA DE USUARIO
         this.app.use(this.mainRoutePath,require('../routes/usuario.routes'));
         //RUTA DE ESTUDIANTE
-        this.app.use(this.mainRoutePath,require('../routes/estudiante.routes'));
+        this.app.use(this.mainRoutePath,require('../routes/alumno.routes'));
         //RUTA DE DIRECTOR DE ESCUELA
 
     }

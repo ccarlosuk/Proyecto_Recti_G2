@@ -1,17 +1,17 @@
 const { Router } = require("express");
 
-const estudianteAuth = require("../middleware/estudianteAuth");
+const estudianteAuth = require("../middleware/alumnoAuth");
 const usuarioAuth = require("../middleware/usuarioAuth");
-const { AlumnoController } = require("../controllers/AlumnoController");
+const AlumnoController = require("../controllers/AlumnoController");
 
 const router = Router();
 
 //LISTAR LOS CURSOS MATRICULADOS
-/* router.get(
-    "/cursos-matriculados",
+router.get(
+    "/alumno/cursos-matriculados",
     [usuarioAuth, estudianteAuth],
-    verCursosMatriculados
-); */
+    AlumnoController.verCursosDelAlumno
+);
 
 //LISTAR LOS DATOS DEL ESTUDIANTE
 router.get(

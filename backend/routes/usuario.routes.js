@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { usuariosPost } = require("../controllers/UsuarioController");
+const {UsuarioController} = require("../controllers/UsuarioController");
 const { check } = require("express-validator");
 const { validarCampos } = require("../middleware/validar-campos");
 
@@ -12,6 +12,5 @@ router.post('/login',[
     //check('correo', 'El valor ingresado no tiene el aspecto de un correo').isEmail(),
     //check('rol', 'No es un rol válido').isIn(['ADMIN_ROLE','USER_ROLE']),
     validarCampos //Ejecutar el middleware para revisar los errores
-],usuariosPost.login );
-
+],UsuarioController.login );
 module.exports = router;
