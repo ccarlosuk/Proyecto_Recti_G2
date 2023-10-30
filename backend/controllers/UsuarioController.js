@@ -5,6 +5,7 @@ const createAccessToken = require("../lib/jwt");
 require('dotenv').config({path: '../.env'})
 
 const usuarioModel = require('../models/UsuarioModel');
+const query = require("../database/dbConnection");
 const TOKEN_SECRET = process.env.TOKEN_SECRET;
 
 const UsuarioController = {
@@ -81,11 +82,18 @@ const UsuarioController = {
         secure: true,
         sameSite: "none",
       });
-
+      [rol] = await query(
+          `SELECT r.nombre_rol
+         FROM USUARIO as u
+                  JOIN ROL as r ON u.ID_ROL = r.ID_ROL
+         WHERE u.id_usuario = ?;`,
+          [userFound[0].id_usuario]
+      )
       res.json({
         id: userFound[0].id_usuario,
         username: userFound[0].usuario,
         constrasenia: userFound[0].contrasenia,
+        rol:rol.nombre_rol,
         token: token
       });
 

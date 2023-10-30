@@ -1,3 +1,7 @@
+drop database proyectorecti;
+create database proyectorecti;
+
+-- ######################################################################################################
 
 CREATE TABLE Cupo (
                 id_cupo VARCHAR(30) NOT NULL,
@@ -221,3 +225,4 @@ FOREIGN KEY (id_rectificacion)
 REFERENCES Rectificacion (id_rectificacion)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION;
+-- ######################################################################################################
