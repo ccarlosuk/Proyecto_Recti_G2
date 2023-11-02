@@ -1,6 +1,6 @@
 drop database proyectorecti;
 create database proyectorecti;
-
+use proyectorecti;
 -- ######################################################################################################
 
 CREATE TABLE Cupo (
@@ -10,11 +10,9 @@ CREATE TABLE Cupo (
                 PRIMARY KEY (id_cupo)
 );
 
-ALTER TABLE Cupo MODIFY COLUMN cupos_asignados NUMERIC(10) COMMENT 'cupos otorgados a la asignatura
-';
+ALTER TABLE Cupo MODIFY COLUMN cupos_asignados NUMERIC(10) COMMENT 'cupos otorgados a la asignatura';
 
-ALTER TABLE Cupo MODIFY COLUMN cupos_ocupados NUMERIC(10) COMMENT 'Cupos que le quedan a la asignatura
-';
+ALTER TABLE Cupo MODIFY COLUMN cupos_ocupados NUMERIC(10) COMMENT 'Cupos que le quedan a la asignatura';
 
 
 CREATE TABLE Horario (
@@ -32,19 +30,27 @@ CREATE TABLE Tipo_Rectificacion (
                 PRIMARY KEY (id_tipo_recti)
 );
 
-ALTER TABLE Tipo_Rectificacion MODIFY COLUMN descripcion VARCHAR(10) COMMENT 'Ingreso o Retiro
-';
+ALTER TABLE Tipo_Rectificacion MODIFY COLUMN descripcion VARCHAR(10) COMMENT 'Ingreso o Retiro';
 
 
 CREATE TABLE Rol (
-                id_rol INT AUTO_INCREMENT NOT NULL,
-                nombre_rol VARCHAR(30) NOT NULL,
+                id_rol INT auto_increment NOT NULL,
+                nombre_rol VARCHAR(30) UNIQUE NOT NULL,
                 PRIMARY KEY (id_rol)
 );
 
 ALTER TABLE Rol MODIFY COLUMN nombre_rol VARCHAR(30) COMMENT 'Estudiante
 Secretaria
 Director';
+
+
+CREATE TABLE Usuario (
+                id_usuario VARCHAR(50) NOT NULL,
+                usuario VARCHAR(50) NOT NULL,
+                contrasenia VARCHAR(60) NOT NULL,
+                id_rol INT NOT NULL,
+                PRIMARY KEY (id_usuario)
+);
 
 
 CREATE TABLE Asignatura (
@@ -60,8 +66,7 @@ ALTER TABLE Asignatura MODIFY COLUMN grupo VARCHAR(20) COMMENT 'GE:Electivo
 O: obligatorio
 GS: Selectivo';
 
-ALTER TABLE Asignatura MODIFY COLUMN ciclo_asignatura NUMERIC(2) COMMENT 'ciclo al que pertenece la asignatura
-';
+ALTER TABLE Asignatura MODIFY COLUMN ciclo_asignatura NUMERIC(2) COMMENT 'ciclo al que pertenece la asignatura';
 
 
 CREATE TABLE Plan_academico (
@@ -87,7 +92,8 @@ CREATE TABLE Seccion (
 
 
 CREATE TABLE Alumno (
-                cod_alumno VARCHAR(10) NOT NULL,
+                cod_alumno VARCHAR(50) NOT NULL,
+                id_usuario VARCHAR(50) NULL,
                 apellido_paterno VARCHAR(15) NOT NULL,
                 apellido_materno VARCHAR(15) NOT NULL,
                 nombre VARCHAR(30) NOT NULL,
@@ -99,22 +105,12 @@ CREATE TABLE Alumno (
 );
 
 ALTER TABLE Alumno MODIFY COLUMN situ_academica VARCHAR(30) COMMENT 'Observado
-Regular
-';
-
-
-CREATE TABLE Usuario (
-                id_usuario VARCHAR(10) NOT NULL,
-                usuario VARCHAR(30) NOT NULL,
-                contrasenia VARCHAR(30) NOT NULL,
-                id_rol INT NOT NULL,
-                PRIMARY KEY (id_usuario)
-);
+Regular';
 
 
 CREATE TABLE Alumno_seccion (
                 cod_alumno_seccion VARCHAR(10) NOT NULL,
-                cod_alumno VARCHAR(10) NOT NULL,
+                cod_alumno VARCHAR(50) NOT NULL,
                 cod_asignatura VARCHAR(10) NOT NULL,
                 id_seccion VARCHAR(10) NOT NULL,
                 PRIMARY KEY (cod_alumno_seccion)
@@ -123,7 +119,7 @@ CREATE TABLE Alumno_seccion (
 
 CREATE TABLE Rectificacion (
                 id_rectificacion VARCHAR(10) NOT NULL,
-                cod_alumno VARCHAR(10) NOT NULL,
+                cod_alumno VARCHAR(50) NOT NULL,
                 fecha DATE NOT NULL,
                 PRIMARY KEY (id_rectificacion)
 );
@@ -143,8 +139,7 @@ CREATE TABLE Detalle_Rectificacion (
 
 ALTER TABLE Detalle_Rectificacion MODIFY COLUMN cod_asignatura VARCHAR(10) COMMENT 'aSIGNATURA A INGRESAR O RETIRARSE';
 
-ALTER TABLE Detalle_Rectificacion MODIFY COLUMN id_seccion VARCHAR(10) COMMENT 'GRUPO DEL GRUPO A INGRESAR O RETIRARSE
-';
+ALTER TABLE Detalle_Rectificacion MODIFY COLUMN id_seccion VARCHAR(10) COMMENT 'GRUPO DEL GRUPO A INGRESAR O RETIRARSE';
 
 ALTER TABLE Detalle_Rectificacion MODIFY COLUMN num_repitencia NUMERIC(2) COMMENT 'Numerod e veces que lleva el curso
 0,1,2da,3era,etc';
@@ -175,6 +170,12 @@ ON UPDATE NO ACTION;
 ALTER TABLE Usuario ADD CONSTRAINT rol_usuario_fk
 FOREIGN KEY (id_rol)
 REFERENCES Rol (id_rol)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
+
+ALTER TABLE Alumno ADD CONSTRAINT usuario_alumno_fk
+FOREIGN KEY (id_usuario)
+REFERENCES Usuario (id_usuario)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION;
 
@@ -214,15 +215,8 @@ REFERENCES Alumno (cod_alumno)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION;
 
-ALTER TABLE Usuario ADD CONSTRAINT alumno_usuario_fk
-FOREIGN KEY (id_usuario)
-REFERENCES Alumno (cod_alumno)
-ON DELETE NO ACTION
-ON UPDATE NO ACTION;
-
 ALTER TABLE Detalle_Rectificacion ADD CONSTRAINT rectificacion_detalle_rectificacion_fk
 FOREIGN KEY (id_rectificacion)
 REFERENCES Rectificacion (id_rectificacion)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION;
--- ######################################################################################################
