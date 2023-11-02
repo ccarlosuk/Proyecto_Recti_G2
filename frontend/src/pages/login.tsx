@@ -23,18 +23,18 @@ const LoginView:React.FC = () => {
         usuario: "",
         password: "",
         loading: false,
-        err: null
+        err: null, //err puede ser null o un [] String
     });
     const LoginFun = (e: { preventDefault: () => void }) => {
         e.preventDefault();
-        setLogin({ ...login, loading: true, err: [] });
+        setLogin({ ...login, loading: true, err: null, });
         axios
             .post(`http://localhost:8080/api/login`, {
                 usuario: login.usuario,
                 password: login.password
             })
             .then((resp) => {
-                setLogin({ ...login, loading: false, err: [] });
+                setLogin({ ...login, loading: false, err: null });
                 //console.log("mensaje de respuesta: ",resp.data.message);
                 console.log("mensaje de respuesta 1: ",resp.data);
                 console.log("mensaje de respuesta 2: ",resp.data.type);
@@ -44,10 +44,11 @@ const LoginView:React.FC = () => {
                 //router.push("/Estudiante");
             })
             .catch((err) => {
-                console.log(err);
-                console.log(login.usuario);
-                console.log(login.password);
-                console.log('Detalles del error:', err.response.data);
+                console.log(err.response.data.errors);
+                // console.log(err);
+                // console.log(login.usuario);
+                // console.log(login.password);
+                // console.log('Detalles del error:', err.response.data);
 
                 if (err.response.status === 400 || err.response.status === 422) {
                     setLogin({
@@ -59,7 +60,7 @@ const LoginView:React.FC = () => {
                     setLogin({
                         ...login,
                         loading: false,
-                        err: "Something went wrong",
+                        err: ["Something went wrong"],
                     });
                 }
             });
@@ -77,8 +78,8 @@ const LoginView:React.FC = () => {
 
                     <div className='formatoLogin' style={{borderRadius:'10px',border: '2px solid black', width:'500px',height:'200px', backgroundColor:'#926A6A',marginTop:'5px'}} >
 
-                        {!login.loading && login.err && (
-                            <Alert variant="danger" className='formatoLogin'>
+                        {login.loading === false && login.err && (
+                            <Alert variant="danger" className='alert-login'>
                                 {login.err}
                             </Alert>
                         )}

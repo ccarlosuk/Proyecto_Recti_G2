@@ -65,9 +65,11 @@ const UsuarioController = {
       //const isMatch = true;
       if (!isMatch){
         return res.status(400).json({
-          message: [
-              'La constraseña es incorrecta'
-          ],
+          errors: [
+            {
+              msg: 'La constraseña es incorrecta'
+            },
+        ],
         });
       }
 
