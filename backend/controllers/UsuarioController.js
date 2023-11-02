@@ -1,5 +1,5 @@
 const { request,response } = require('express');
-const bcryptjs = require('bcryptjs');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken')
 const createAccessToken = require("../lib/jwt");
 require('dotenv').config({path: '../.env'})
@@ -61,8 +61,8 @@ const UsuarioController = {
       }*/
 
       //COMPARAR CONTRASEÑA
-      //const isMatch = await bcrypt.compare(password,userFound[0].contrasenia);
-      const isMatch = true;
+      const isMatch = await bcrypt.compare(password,userFound[0].contrasenia);
+      //const isMatch = true;
       if (!isMatch){
         return res.status(400).json({
           message: [
