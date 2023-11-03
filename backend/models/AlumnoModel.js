@@ -2,6 +2,16 @@ const query = require("../database/dbConnection");
 
 //DEFINICION DE LA CLASE ALUMNOMODEL
 class AlumnoModel {
+    //OBTENER ALUMNO DE ACUERDO AL ID DE USUARIO
+    getAlumnoByUsuario(name_usuario) {
+        const queryString =
+            `SELECT a.*
+             FROM Usuario AS u
+             JOIN Alumno AS a ON u.id_usuario = a.id_usuario
+             WHERE u.usuario = ?`;
+        const result = query(queryString, name_usuario);
+        return result;
+    }
     //FUNCION OBTENER DATOS DEL ESTUDIANTE
     getById(id) {
         const queryString = `
@@ -28,8 +38,15 @@ class AlumnoModel {
         return result;
     }
 
-    getCursosMatriculados(id) {
-
+    getCursosAlumno(cod_alumno) {
+        const queryString =
+            `SELECT a.cod_asignatura, a.nombre
+                FROM Alumno_seccion AS als
+                JOIN Seccion AS s ON als.id_seccion = s.id_seccion AND als.cod_asignatura = s.cod_asignatura
+                JOIN Asignatura AS a ON s.cod_asignatura = a.cod_asignatura
+                WHERE als.cod_alumno = ?`;
+        const result = query(queryString, cod_alumno);
+        return result;
     }
 }
 //SE INSTANCIA EL OBJETO DE LA CLASE ALUMNOMODEL

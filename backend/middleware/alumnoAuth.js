@@ -5,7 +5,7 @@ const AlumnoAuth = async (req, res, next) => {
         `SELECT u.id_usuario, u.usuario, r.nombre_rol
          FROM USUARIO as u
                   JOIN ROL as r ON u.ID_ROL = r.ID_ROL
-         WHERE u.id_usuario = ? AND r.NOMBRE_ROL= 'ESTUDIANTE';`,
+         WHERE u.id_usuario = ? AND r.NOMBRE_ROL= 'ALUMNO';`,
         [req.user.id]
     );
     if (estudiante[0]) {

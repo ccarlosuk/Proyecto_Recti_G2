@@ -18,12 +18,18 @@ const LoginView:React.FC = () => {
     // CODIGO PARA LA INTEFGRACIÓN DEL BACKEND CON EL FRONTEND
     //FALTA LA REDIRECCIÓN A LA RUTA CORRESPONDIENTE
     const router = useRouter(); //useNavigate()
+    type Estado = {
+        usuario: string;
+        password: string;
+        loading: boolean;
+        err: string[] | null;
+    };
 
-    const [login, setLogin] = useState({
+    const [login, setLogin] = useState<Estado>({
         usuario: "",
         password: "",
         loading: false,
-        err: null, //err puede ser null o un [] String
+        err: null , //err puede ser null o un [] String
     });
     const LoginFun = (e: { preventDefault: () => void }) => {
         e.preventDefault();
@@ -41,7 +47,7 @@ const LoginView:React.FC = () => {
 
                 setAuthUser(resp.data);
                 router.push("/" + resp.data.rol);
-                //router.push("/Estudiante");
+                //router.push("/Alumno");
             })
             .catch((err) => {
                 console.log(err.response.data.errors);
@@ -60,7 +66,7 @@ const LoginView:React.FC = () => {
                     setLogin({
                         ...login,
                         loading: false,
-                        err: ["Something went wrong"],
+                        err: ["Algo salió mal"],
                     });
                 }
             });

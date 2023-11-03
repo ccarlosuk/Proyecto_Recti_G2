@@ -1,13 +1,13 @@
 import React from 'react';
 import {useRouter} from "next/router";
-const Estudiante = () => {
+const Alumno = () => {
     const navigate = useRouter();
 
     return (
         <>
-            <h1 style={{color:"green"}}>Estudiante</h1>
+            <h1 style={{color:"green"}}>Alumno</h1>
         </>
     )
 };
 
-export default Estudiante;
+export default Alumno;

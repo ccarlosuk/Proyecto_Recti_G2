@@ -10,7 +10,7 @@ const AlumnoController = {
         try {
             const { id } = req.params;
             console.log(id);
-            let alumno = await alumnoModel.getById(id);
+            const alumno = await alumnoModel.getById(id);
             console.log(alumno);
 
             if (!alumno || alumno.length === 0) {
@@ -28,15 +28,25 @@ const AlumnoController = {
     },
     verCursosDelAlumno: async (req = request, res = response) => {
         try {
-            const alumno = req.query.user;// ?id=${alumnoID} en el frontEnd
-            //Crear en model una funcion para obtener al alumno de acuerdo a su id
-            const userFound = await usuarioModel.checkUserExists(alumno);
+            const alumnoUser = req.query.user;// ?id=${alumnoID} en el frontEnd
 
-            res.status(200).json({
-                id: userFound[0].id_usuario,
-                username: userFound[0].usuario,
-                constrasenia: userFound[0].contrasenia,
-            });
+            //Crear en model una funcion para obtener al alumno (arreglo) de acuerdo a su nombre de usuario
+            const alumnoFound = await alumnoModel.getAlumnoByUsuario(alumnoUser);
+            console.log(alumnoFound);
+
+            if (alumnoFound.length === 0) {
+                return res.status(404).json("Alumno no existe");
+            }
+
+            const cursosAlumno = await alumnoModel.getCursosAlumno(
+                alumnoFound[0].cod_alumno
+            );
+
+            if (cursosAlumno.length === 0){
+                return res.status(200).json("No hay cursos matriculados");
+            }
+            //RESPONDER CON
+            res.status(200).json(cursosAlumno);
 
         }catch (err) {
             console.log(err);

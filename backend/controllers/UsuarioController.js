@@ -101,7 +101,7 @@ const UsuarioController = {
 
       /*
       const checkPassword =
-          userFound[0].id_rol === 1 //Estudiante
+          userFound[0].id_rol === 1 //Alumno
               ? password === userFound[0].password //
               : await bcrypt.compare(password,userFound[0].contrasenia);//
       //--------------JWT---------------

@@ -125,7 +125,7 @@ async function insertUsuarios(data) {
             let {
                 cod_alumno,
                 coe_alumno = "",
-                id_rol = "1",//Estudiante
+                id_rol = "1",//Alumno
             } = item;
 
             if (cod_alumno === undefined) {
