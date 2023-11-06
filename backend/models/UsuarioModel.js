@@ -9,10 +9,16 @@ class UsuarioModel {
     }
 
     checkUserExists(usuario) {
-        const queryString = "SELECT * FROM usuario WHERE usuario = ?";
+        const queryString =`
+            select u.id_usuario, u.usuario, u.contrasenia, r.nombre_rol
+            from usuario u
+            join rol as r
+            on u.id_rol = r.id_rol
+            where u.usuario = ?`;
         const result = query(queryString, usuario);
         return result;
     }
+
 }
 usuarioModel = new UsuarioModel();
 
