@@ -16,7 +16,7 @@ ALTER TABLE Cupo MODIFY COLUMN cupos_ocupados NUMERIC(10) COMMENT 'Cupos que le 
 
 
 CREATE TABLE Horario (
-                id_horario VARCHAR(10) NOT NULL,
+                id_horario VARCHAR(50) NOT NULL,
                 dia VARCHAR(10) NOT NULL,
                 hora_inicio INT NOT NULL,
                 hora_fin INT NOT NULL,
@@ -25,28 +25,28 @@ CREATE TABLE Horario (
 
 
 CREATE TABLE Tipo_Rectificacion (
-                id_tipo_recti VARCHAR(10) NOT NULL,
-                descripcion VARCHAR(10) NOT NULL,
+                id_tipo_recti VARCHAR(50) NOT NULL,
+                descripcion VARCHAR(100) NOT NULL,
                 PRIMARY KEY (id_tipo_recti)
 );
 
-ALTER TABLE Tipo_Rectificacion MODIFY COLUMN descripcion VARCHAR(10) COMMENT 'Ingreso o Retiro';
+ALTER TABLE Tipo_Rectificacion MODIFY COLUMN descripcion VARCHAR(100) COMMENT 'Ingreso o Retiro';
 
 
 CREATE TABLE Rol (
-                id_rol INT auto_increment NOT NULL,
-                nombre_rol VARCHAR(30) UNIQUE NOT NULL,
+                id_rol INT AUTO_INCREMENT NOT NULL,
+                nombre_rol VARCHAR(50) NOT NULL,
                 PRIMARY KEY (id_rol)
 );
 
-ALTER TABLE Rol MODIFY COLUMN nombre_rol VARCHAR(30) COMMENT 'Estudiante
+ALTER TABLE Rol MODIFY COLUMN nombre_rol VARCHAR(50) COMMENT 'Estudiante
 Secretaria
 Director';
 
 
 CREATE TABLE Usuario (
                 id_usuario VARCHAR(50) NOT NULL,
-                usuario VARCHAR(50) NOT NULL,
+                usuario VARCHAR(50) UNIQUE NOT NULL,
                 contrasenia VARCHAR(60) NOT NULL,
                 id_rol INT NOT NULL,
                 PRIMARY KEY (id_usuario)
@@ -54,71 +54,71 @@ CREATE TABLE Usuario (
 
 
 CREATE TABLE Asignatura (
-                cod_asignatura VARCHAR(10) NOT NULL,
-                nombre VARCHAR(30) NOT NULL,
+                cod_asignatura VARCHAR(50) NOT NULL,
+                nombre VARCHAR(100) NOT NULL,
                 creditaje INT NOT NULL,
-                grupo VARCHAR(20),
-                ciclo_asignatura NUMERIC(2) NOT NULL,
+                grupo VARCHAR(50),
+                ciclo_asignatura NUMERIC(3) NOT NULL,
                 PRIMARY KEY (cod_asignatura)
 );
 
-ALTER TABLE Asignatura MODIFY COLUMN grupo VARCHAR(20) COMMENT 'GE:Electivo
+ALTER TABLE Asignatura MODIFY COLUMN grupo VARCHAR(50) COMMENT 'GE:Electivo
 O: obligatorio
 GS: Selectivo';
 
-ALTER TABLE Asignatura MODIFY COLUMN ciclo_asignatura NUMERIC(2) COMMENT 'ciclo al que pertenece la asignatura';
+ALTER TABLE Asignatura MODIFY COLUMN ciclo_asignatura NUMERIC(3) COMMENT 'ciclo al que pertenece la asignatura';
 
 
 CREATE TABLE Plan_academico (
-                cod_asignatura VARCHAR(10) NOT NULL,
-                plan_asignatura NUMERIC(4) NOT NULL,
-                escuela VARCHAR(30) NOT NULL,
+                cod_asignatura VARCHAR(50) NOT NULL,
+                plan_asignatura NUMERIC(5) NOT NULL,
+                escuela VARCHAR(100) NOT NULL,
                 PRIMARY KEY (cod_asignatura)
 );
 
-ALTER TABLE Plan_academico MODIFY COLUMN plan_asignatura NUMERIC(4) COMMENT 'plan academico al que pertenece la asignatura';
+ALTER TABLE Plan_academico MODIFY COLUMN plan_asignatura NUMERIC(5) COMMENT 'plan academico al que pertenece la asignatura';
 
-ALTER TABLE Plan_academico MODIFY COLUMN escuela VARCHAR(30) COMMENT 'sistemas
+ALTER TABLE Plan_academico MODIFY COLUMN escuela VARCHAR(100) COMMENT 'sistemas
 software';
 
 
 CREATE TABLE Seccion (
-                id_seccion VARCHAR(10) NOT NULL,
-                cod_asignatura VARCHAR(10) NOT NULL,
+                id_seccion VARCHAR(50) NOT NULL,
+                cod_asignatura VARCHAR(50) NOT NULL,
                 id_cupo VARCHAR(30) NOT NULL,
-                id_horario VARCHAR(10) NOT NULL,
+                id_horario VARCHAR(50) NOT NULL,
                 PRIMARY KEY (id_seccion, cod_asignatura)
 );
 
 
 CREATE TABLE Alumno (
                 cod_alumno VARCHAR(50) NOT NULL,
-                id_usuario VARCHAR(50) NULL,
-                apellido_paterno VARCHAR(15) NOT NULL,
-                apellido_materno VARCHAR(15) NOT NULL,
-                nombre VARCHAR(30) NOT NULL,
+                id_usuario VARCHAR(50),
+                apellido_paterno VARCHAR(100) NOT NULL,
+                apellido_materno VARCHAR(100) NOT NULL,
+                nombre VARCHAR(100) NOT NULL,
                 anio_ingreso NUMERIC(10) NOT NULL,
-                situ_academica VARCHAR(30) NOT NULL,
-                correo VARCHAR(30) NOT NULL,
+                situ_academica VARCHAR(50) NOT NULL,
+                correo VARCHAR(255) NOT NULL,
                 promedio_ponderado NUMERIC(30,3) NOT NULL,
                 PRIMARY KEY (cod_alumno)
 );
 
-ALTER TABLE Alumno MODIFY COLUMN situ_academica VARCHAR(30) COMMENT 'Observado
+ALTER TABLE Alumno MODIFY COLUMN situ_academica VARCHAR(50) COMMENT 'Observado
 Regular';
 
 
 CREATE TABLE Alumno_seccion (
-                cod_alumno_seccion VARCHAR(10) NOT NULL,
+                cod_alumno_seccion VARCHAR(50) NOT NULL,
                 cod_alumno VARCHAR(50) NOT NULL,
-                cod_asignatura VARCHAR(10) NOT NULL,
-                id_seccion VARCHAR(10) NOT NULL,
+                cod_asignatura VARCHAR(50) NOT NULL,
+                id_seccion VARCHAR(50) NOT NULL,
                 PRIMARY KEY (cod_alumno_seccion)
 );
 
 
 CREATE TABLE Rectificacion (
-                id_rectificacion VARCHAR(10) NOT NULL,
+                id_rectificacion VARCHAR(50) NOT NULL,
                 cod_alumno VARCHAR(50) NOT NULL,
                 fecha DATE NOT NULL,
                 PRIMARY KEY (id_rectificacion)
@@ -126,25 +126,25 @@ CREATE TABLE Rectificacion (
 
 
 CREATE TABLE Detalle_Rectificacion (
-                id_deta_recti VARCHAR(10) NOT NULL,
-                id_rectificacion VARCHAR(10) NOT NULL,
-                cod_asignatura VARCHAR(10) NOT NULL,
-                id_seccion VARCHAR(10) NOT NULL,
-                id_tipo_recti VARCHAR(10) NOT NULL,
-                motivo VARCHAR(50) NOT NULL,
+                id_deta_recti VARCHAR(50) NOT NULL,
+                id_rectificacion VARCHAR(50) NOT NULL,
+                cod_asignatura VARCHAR(50) NOT NULL,
+                id_seccion VARCHAR(50) NOT NULL,
+                id_tipo_recti VARCHAR(50) NOT NULL,
+                motivo VARCHAR(100) NOT NULL,
                 num_repitencia NUMERIC(2) NOT NULL,
-                estado VARCHAR(15) NOT NULL,
+                estado VARCHAR(50) NOT NULL,
                 PRIMARY KEY (id_deta_recti)
 );
 
-ALTER TABLE Detalle_Rectificacion MODIFY COLUMN cod_asignatura VARCHAR(10) COMMENT 'aSIGNATURA A INGRESAR O RETIRARSE';
+ALTER TABLE Detalle_Rectificacion MODIFY COLUMN cod_asignatura VARCHAR(50) COMMENT 'aSIGNATURA A INGRESAR O RETIRARSE';
 
-ALTER TABLE Detalle_Rectificacion MODIFY COLUMN id_seccion VARCHAR(10) COMMENT 'GRUPO DEL GRUPO A INGRESAR O RETIRARSE';
+ALTER TABLE Detalle_Rectificacion MODIFY COLUMN id_seccion VARCHAR(50) COMMENT 'GRUPO DEL GRUPO A INGRESAR O RETIRARSE';
 
 ALTER TABLE Detalle_Rectificacion MODIFY COLUMN num_repitencia NUMERIC(2) COMMENT 'Numerod e veces que lleva el curso
 0,1,2da,3era,etc';
 
-ALTER TABLE Detalle_Rectificacion MODIFY COLUMN estado VARCHAR(15) COMMENT 'en espera
+ALTER TABLE Detalle_Rectificacion MODIFY COLUMN estado VARCHAR(50) COMMENT 'en espera
 aprobado
 rechazado';
 
@@ -220,3 +220,4 @@ FOREIGN KEY (id_rectificacion)
 REFERENCES Rectificacion (id_rectificacion)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION;
+-- ######################################################################################################

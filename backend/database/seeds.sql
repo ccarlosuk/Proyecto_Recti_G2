@@ -137,4 +137,8 @@ VALUES ('2010705', 2014, 'SISTEMAS');
 
 select * FROM plan_academico;
 
-
+select u.id_usuario, u.usuario, u.contrasenia, r.nombre_rol
+from usuario u
+join rol as r
+on u.id_rol = r.id_rol
+where u.usuario = ?
