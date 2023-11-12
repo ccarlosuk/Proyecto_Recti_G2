@@ -1,3 +1,4 @@
+/*
 import React from 'react';
 import {useRouter} from "next/router";
 const Estudiante = () => {
@@ -5,9 +6,10 @@ const Estudiante = () => {
 
     return (
         <>
+
             <h1 style={{color:"green"}}>Director</h1>
         </>
     )
 };
 
-export default Estudiante;
+export default Estudiante;*/
