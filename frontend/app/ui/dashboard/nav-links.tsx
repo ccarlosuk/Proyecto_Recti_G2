@@ -21,7 +21,7 @@ const links = [
         href: '/dashboard/alumno',
         icon: DocumentDuplicateIcon,
     },
-    { name: 'About', href: '/dashboard/about', icon: UserGroupIcon },
+    { name: 'Acerca', href: '/dashboard/about', icon: UserGroupIcon },
 ];
 
 export default function NavLinks() {

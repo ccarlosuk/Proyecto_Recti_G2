@@ -1,8 +1,12 @@
-import LoginForm from '@/app/ui/login';
-export default async function LoginPage() {
+import LoginForm from "@/app/ui/login/loginFormat";
+
+const LoginPage = () => {
     return (
-        <main >
-            <LoginForm />
-        </main>
+        <div >
+            <LoginForm/>
+        </div>
     );
-}
+};
+
+export default LoginPage;
+

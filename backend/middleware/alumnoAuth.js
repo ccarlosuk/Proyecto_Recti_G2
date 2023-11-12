@@ -1,6 +1,6 @@
 const query = require("../database/dbConnection");
 const AlumnoAuth = async (req, res, next) => {
-    //console.log(req.user.id);
+    console.log(req.user.id);
     const estudiante = await query(
         `SELECT u.id_usuario, u.usuario, r.nombre_rol
          FROM USUARIO as u

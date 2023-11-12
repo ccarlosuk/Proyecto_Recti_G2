@@ -1,15 +1,17 @@
 'use client';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faUser, faUserCircle,faKey ,faRightToBracket,faEye,faEyeSlash} from '@fortawesome/free-solid-svg-icons'
-import 'bootstrap/dist/css/bootstrap.min.css'
-import logo from '@/src/img/logofisi.png'
+import logo from '@/src/img/logofisi.png';
 
+import '@/app/ui/global.css';
 
 
 import Alert from 'react-bootstrap/Alert';
 //dependencia para la conexion al backend
-import axios from "axios";
-import { AxiosError } from 'axios';
+//import axios from "axios";
+
+import axios from "@/app/api/apiR";
+
 
 //importar el hook
 import React, {useEffect, useState} from 'react';
@@ -42,43 +44,43 @@ export default function LoginView(){
         //noStore();
         e.preventDefault();
         setLogin({ ...login, loading: true, err: null, });
-            await axios
-                .post(`http://localhost:8080/api/login`, {
-                    usuario: login.usuario,
-                    password: login.password
-                })
-                .then((resp) => {
-                    setLogin({ ...login, loading: false, err: null });
-                    //console.log("mensaje de respuesta: ",resp.data.message);
-                    console.log("mensaje de respuesta 1: ",resp.data);
+        await axios
+            .post(`http://localhost:8080/api/login`, {
+                usuario: login.usuario,
+                password: login.password
+            })
+            .then((resp) => {
+                setLogin({ ...login, loading: false, err: null });
+                //console.log("mensaje de respuesta: ",resp.data.message);
+                console.log("mensaje de respuesta 1: ",resp.data);
 
-                    setAuthUser(resp.data);
-                    router.push("/dashboard/" + resp.data.rol);
-                    console.log("/dashboard/" + resp.data.rol);
-                    //router.push("/Alumno");
+                setAuthUser(resp.data);
+                router.push("/dashboard");
+                console.log("/dashboard/" + resp.data.rol);
+                //router.push("/Alumno");
 
-                })
-                .catch((err) => {
-                    console.log(err.response.data.errors);
-                    // console.log(err);
-                    // console.log(login.usuario);
-                    // console.log(login.password);
-                    // console.log('Detalles del error:', err.response.data);
+            })
+            .catch((err) => {
+                console.log(err.response.data.errors);
+                // console.log(err);
+                // console.log(login.usuario);
+                // console.log(login.password);
+                // console.log('Detalles del error:', err.response.data);
 
-                    if (err.response.status === 400 || err.response.status === 422) {
-                        setLogin({
-                            ...login,
-                            loading: false,
-                            err: err.response.data.errors[0].msg,
-                        });
-                    } else {
-                        setLogin({
-                            ...login,
-                            loading: false,
-                            err: ["Algo salió mal"],
-                        });
-                    }
-                });
+                if (err.response.status === 400 || err.response.status === 422) {
+                    setLogin({
+                        ...login,
+                        loading: false,
+                        err: err.response.data.errors[0].msg,
+                    });
+                } else {
+                    setLogin({
+                        ...login,
+                        loading: false,
+                        err: ["Algo salió mal"],
+                    });
+                }
+            });
     };
 
 

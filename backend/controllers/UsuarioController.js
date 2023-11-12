@@ -84,6 +84,7 @@ const UsuarioController = {
         httpOnly: process.env.NODE_ENV !== "development",
         secure: true,
         sameSite: "none",
+        withCredentials: true
       });
       res.json({
         id: userFound[0].id_usuario,

@@ -25,7 +25,10 @@ class Server {
 
     middlewares() {
         //CORS
-        this.app.use(cors());
+        this.app.use(cors({
+            credentials: true,
+            origin: 'http://localhost:3000',
+        }));
 
         //LECTURA Y PARSEO DEL BODY
         this.app.use( express.json() );
