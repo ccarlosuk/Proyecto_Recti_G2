@@ -15,7 +15,7 @@ router.get(
 
 //LISTAR LOS DATOS DEL ESTUDIANTE
 router.get(
-    "/alumno/:id",
+    "/alumno/datos-alumno",
     [usuarioAuth, estudianteAuth],
     AlumnoController.getAlumno
 );

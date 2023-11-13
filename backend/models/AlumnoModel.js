@@ -40,7 +40,7 @@ class AlumnoModel {
 
     getCursosAlumno(cod_alumno) {
         const queryString =
-            `SELECT a.cod_asignatura, a.nombre
+            `SELECT a.cod_asignatura, a.nombre, a.ciclo_asignatura, s.id_seccion
                 FROM Alumno_seccion AS als
                 JOIN Seccion AS s ON als.id_seccion = s.id_seccion AND als.cod_asignatura = s.cod_asignatura
                 JOIN Asignatura AS a ON s.cod_asignatura = a.cod_asignatura

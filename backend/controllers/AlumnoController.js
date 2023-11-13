@@ -8,7 +8,8 @@ const AlumnoController = {
     //GET
     getAlumno: async (req = request, res = response) => {
         try {
-            const { id } = req.params;
+            //const { id } = req.params;
+            const alumnoUser = req.query.id;
             console.log(id);
             const alumno = await alumnoModel.getById(id);
             console.log(alumno);

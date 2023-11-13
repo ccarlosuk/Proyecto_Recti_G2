@@ -8,9 +8,16 @@ import Alert from "react-bootstrap/Alert";
 import { useParams } from "react-router-dom";
 
 import axios from "@/app/api/apiR";
+import {TableDataItem} from "@/app/lib/fomat-table";
 
-const StudentCourse = () => {
-    let { code } = useParams();
+import './DynamicTable.css';
+import RadioButtons from "@/app/ui/alumno/buttonGroup"; // Importar el archivo de estilos CSS
+
+
+export default function StudentCourse(){
+
+    //let { code } = useParams();
+
     //OBTENER AL USUARIO DESDE LA COOKIES DEL CLIENTE
     const auth = getAuthUser();
     //const userNameAlumno = auth.username;
@@ -41,12 +48,17 @@ const StudentCourse = () => {
     }, [courses.reload]);
     console.log("lista de cursos: " + courses.results.length);
 
-    let TableData = courses.results.map((obj) => {
+
+    const TableData:TableDataItem[] = courses.results.map((obj) => {
         return {
             cod_asignatura:obj.cod_asignatura,
-            nombre: obj.nombre
+            nombre: obj.nombre,
+            ciclo_asignatura: obj.ciclo_asignatura,
+            id_seccion: obj.id_seccion
         };
     });
+    //PARA MANEJAR EL RENDER DE TABLA DINAMICA
+    const [checkedRows, setCheckedRows] = useState<number[]>([]);
 
     return (
         <>
@@ -54,7 +66,9 @@ const StudentCourse = () => {
                 courses.err === null &&
                 Array.isArray(courses.results) &&
                 //DynamicTable(TableData, courses.results[0].cod_asignatura)}
-                DynamicTable(TableData, "Asignaturas Matriculadas")}
+                DynamicTable(TableData, "Asignaturas Matriculadas",checkedRows,setCheckedRows)}
+                {/*<DynamicTable TableData={TableData} type="Asignaturas Matriculadas" />
+                )}*/}
 
             {courses.loading === false &&
                 courses.err == null &&
@@ -95,8 +109,7 @@ const StudentCourse = () => {
                     <br />
                 </>
             )}
+
         </>
     );
 };
-
-export default StudentCourse;
