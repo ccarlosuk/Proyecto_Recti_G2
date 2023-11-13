@@ -3,6 +3,9 @@ import {Tabla, TableDataItem} from "@/app/lib/fomat-table";
 import DetalleCursoTable from "@/app/ui/alumno/tablaAsignaturasCambio";
 import React, { useState } from "react";
 import TablaAsignaturasRetiro from "@/app/ui/alumno/tablaAsignaturasRetiro";
+import TablaIngresar from "@/app/ui/alumno/tablaIngresarCurso";
+import tablaIngresarCurso from "@/app/ui/alumno/tablaIngresarCurso";
+
 export default function DynamicTable ({
                                           TableData, type,
                                       })
@@ -174,11 +177,18 @@ export default function DynamicTable ({
                     <tbody>{tdData()}</tbody>
                 </table>
             </section>
+
+
             <DetalleCursoTable rowData={TablaCambio} type={"Cursos a Cambiar"}
                 />
             <TablaAsignaturasRetiro rowData={TablaRetiro} type={"Cursos a Retirar"}
                 />
-
+           
+                <section>
+                <TablaIngresar/>
+                </section>
+               
+                
         </>
 
 

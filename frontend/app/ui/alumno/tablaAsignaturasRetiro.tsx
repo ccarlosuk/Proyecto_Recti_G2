@@ -31,11 +31,11 @@ export default function tablaAsignaturasRetiro ({rowData, type}){
                                 {data}
                             </th>
                         ))}
-                        {additionalHeaders.map((header) => (
+                        {/* {additionalHeaders.map((header) => (
                             <th key={header} className="shared-th">
                                 {header}
                             </th>
-                        ))}
+                        ))} */}
                     </tr>
                     </thead>
                     <tbody>
@@ -49,7 +49,7 @@ export default function tablaAsignaturasRetiro ({rowData, type}){
                                     {row[v]}
                                 </td>
                             ))}
-                            <td key={x++} className="shared-td">
+                            {/* <td key={x++} className="shared-td">
                                 <input
                                     type="text" className="form-control" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping"                                />
                             </td>
@@ -57,7 +57,7 @@ export default function tablaAsignaturasRetiro ({rowData, type}){
                                 <input
                                     type="text" className="form-control" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping"
                                 />
-                            </td>
+                            </td> */}
                         </tr>
                     ))}
                     </tbody>

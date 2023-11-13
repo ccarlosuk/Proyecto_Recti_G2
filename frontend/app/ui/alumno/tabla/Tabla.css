@@ -1,11 +1,12 @@
 .sec{
     background-color: #2f6ee9;
     width: 90%;
-    margin-top: 12%;
+    margin-top: 3%;
+    margin-bottom: 3%;
     box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.351);
-    margin-left: 5%;
+    margin-left: 1%;
     border-radius: 10px;
-    margin-bottom: 20%;
+    
     overflow-x:auto;
 
 }

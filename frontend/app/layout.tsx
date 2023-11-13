@@ -10,9 +10,9 @@ export default function RootLayout({
     return (
         <html lang="en">
         <body className={`${inter.className} antialiased`}>{children}
-        <footer>
+        {/* <footer>
             Layout de la Raíz
-        </footer>
+        </footer> */}
         </body>
         </html>
     );
