@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import "@/app/ui/alumno/styles/CursosAlumno.css";
 import DynamicTable from "@/app/ui/alumno/tabla/tablaDinamica";
 import React, { useState, useEffect } from "react";
@@ -8,21 +8,19 @@ import Alert from "react-bootstrap/Alert";
 import { useParams } from "react-router-dom";
 
 import axios from "@/app/api/apiR";
-import {TableDataItem} from "@/app/lib/fomat-table";
+import { TableDataItem } from "@/app/lib/fomat-table";
 
-import './DynamicTable.css';
+import "./DynamicTable.css";
 import RadioButtons from "@/app/ui/alumno/buttonGroup"; // Importar el archivo de estilos CSS
 
-
-export default function StudentCourse(){
-
+export default function StudentCourse() {
     //let { code } = useParams();
 
     //OBTENER AL USUARIO DESDE LA COOKIES DEL CLIENTE
     const auth = getAuthUser();
     //const userNameAlumno = auth.username;
     const userNameAlumno = "patrick.monzon";
-    console.log("getAuthUser: "+ auth);
+    console.log("getAuthUser: " + auth);
     const [courses, setCourses] = useState({
         loading: true,
         results: [],
@@ -33,7 +31,9 @@ export default function StudentCourse(){
         setCourses({ ...courses, loading: true });
         //console.log("Token: " + auth.token);
         axios
-            .get(`http://localhost:8080/api/alumno/cursos-matriculados?user=${userNameAlumno}`)
+            .get(
+                `http://localhost:8080/api/alumno/cursos-matriculados?user=${userNameAlumno}`
+            )
             .then((resp) => {
                 setCourses({ ...courses, results: resp.data, loading: false });
             })
@@ -48,13 +48,12 @@ export default function StudentCourse(){
     }, [courses.reload]);
     console.log("lista de cursos: " + courses.results.length);
 
-
-    const TableData:TableDataItem[] = courses.results.map((obj) => {
+    const TableData: TableDataItem[] = courses.results.map((obj) => {
         return {
-            cod_asignatura:obj.cod_asignatura,
+            cod_asignatura: obj.cod_asignatura,
             nombre: obj.nombre,
             ciclo_asignatura: obj.ciclo_asignatura,
-            id_seccion: obj.id_seccion
+            id_seccion: obj.id_seccion,
         };
     });
 
@@ -102,14 +101,16 @@ export default function StudentCourse(){
                         {courses.err}
                     </Alert>
                     <br />
-                    <button className="showbtn" onClick={(e) => window.location.reload()}>
+                    <button
+                        className="showbtn"
+                        onClick={(e) => window.location.reload()}
+                    >
                         Back
                     </button>
                     <br />
                     <br />
                 </>
             )}
-
         </>
     );
-};
+}
