@@ -57,18 +57,18 @@ export default function StudentCourse(){
             id_seccion: obj.id_seccion
         };
     });
-    //PARA MANEJAR EL RENDER DE TABLA DINAMICA
-    const [checkedRows, setCheckedRows] = useState<number[]>([]);
 
     return (
         <>
             {courses.loading === false &&
                 courses.err === null &&
-                Array.isArray(courses.results) &&
+                Array.isArray(courses.results) && (
                 //DynamicTable(TableData, courses.results[0].cod_asignatura)}
-                DynamicTable(TableData, "Asignaturas Matriculadas",checkedRows,setCheckedRows)}
-                {/*<DynamicTable TableData={TableData} type="Asignaturas Matriculadas" />
-                )}*/}
+                //DynamicTable(TableData, "Asignaturas Matriculadas",checkedRows,setCheckedRows)}
+                <DynamicTable TableData={TableData}
+                              type="Asignaturas Matriculadas"
+                              />
+                )}
 
             {courses.loading === false &&
                 courses.err == null &&
