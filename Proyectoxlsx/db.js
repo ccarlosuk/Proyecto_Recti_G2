@@ -48,12 +48,12 @@ async function insertData(data) {
             }
 
             let situ_academica = rep_plan_actual >= 2 ? 'observado' : 'regular';
-            let id_usuario = cod_alumno;
+            //let id_usuario = cod_alumno;
 
-            const query = 'INSERT IGNORE INTO alumno (cod_alumno,id_usuario, apellido_paterno, apellido_materno, nombre, anio_ingreso, situ_academica, correo, promedio_ponderado) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?)';
+            const query = 'INSERT IGNORE INTO alumno (cod_alumno, apellido_paterno, apellido_materno, nombre, anio_ingreso, situ_academica, correo, promedio_ponderado) VALUES (?, ?, ?, ?, ?, ?, ?,?)';
             // Reemplaza "columna1", "columna2", "columna3" con los nombres de tus columnas
 
-            await connection.execute(query, [cod_alumno, id_usuario, ape_paterno, ape_materno, nom_alumno, anio_ingreso, situ_academica, coe_alumno, promedio_ponderado]);
+            await connection.execute(query, [cod_alumno, ape_paterno, ape_materno, nom_alumno, anio_ingreso, situ_academica, coe_alumno, promedio_ponderado]);
             // console.log(++i);
         }
         console.log('Alumnos insertados con éxito.');
@@ -265,32 +265,32 @@ async function ingresarSecciones(data) {
                 cod_asignatura,
                 cod_seccion = 0
             } = item;
-            console.log(item);
+            //console.log(item);
             if (cod_asignatura === undefined) {
                 continue;
             }
 
             let numeroAleatorio = Math.floor(Math.random() * (max - min + 1)) + min;
-            console.log(numeroAleatorio);
+            //console.log(numeroAleatorio);
             const cupo = cupos[numeroAleatorio];
             numeroAleatorio = Math.floor(Math.random() * (max - min + 1)) + min;
-            console.log(numeroAleatorio);
+            //console.log(numeroAleatorio);
 
             const horario = horarios[numeroAleatorio];
 
 
-            const query = 'INSERT IGNORE INTO seccion (cod_asignatura, id_seccion, id_cupo, id_horario) VALUES (?, ?, ?, ?)';
+            const query = 'INSERT IGNORE INTO seccion (id_seccion, cod_asignatura, id_cupo, id_horario) VALUES (?, ?, ?, ?)';
             // Reemplaza "columna1", "columna2", "columna3" con los nombres de tus columnas
 
-            await connection.execute(query, [cod_asignatura, cod_seccion, cupo, horario]);
+            await connection.execute(query, [cod_seccion, cod_asignatura, cupo, horario]);
         }
         console.log('Secciones insertados con éxito.');
         // const query = 'SELECT cod_asignatura,grupo FROM asignatura';
         // const arreglo = await connection.execute(query);
         // return arreglo[0];
         // return arreglo[0].map(valor => [valor.cod_asignatura, valor.grupo])
-    } catch {
-        console.log("error al insertarSecciones");
+    } catch (err) {
+        console.log("error al insertarSecciones: " + err);
     } finally {
         connection.close();
     }
@@ -313,12 +313,12 @@ async function insertarAlumno_Seccion(data) {
             const cod_alumno_seccion = `cas${++i}`;
             const query = 'INSERT INTO alumno_seccion (cod_alumno_seccion, cod_alumno, cod_asignatura, id_seccion) VALUES(?, ?, ?, ?)';
             // Reemplaza "columna1", "columna2", "columna3" con los nombres de tus columnas
-            console.log([cod_alumno_seccion, cod_alumno, cod_asignatura, cod_seccion]);
+            //console.log([cod_alumno_seccion, cod_alumno, cod_asignatura, cod_seccion]);
             await connection.execute(query, [cod_alumno_seccion, cod_alumno, cod_asignatura, cod_seccion]);
             // console.log(++i);
         }
         console.log(i);
-        console.log('Asignaturas insertadas con éxito.');
+        console.log('Alumno-seccion insertadas con éxito.');
     } catch (error) {
         console.error('Error al insertar datos:', error);
     } finally {
