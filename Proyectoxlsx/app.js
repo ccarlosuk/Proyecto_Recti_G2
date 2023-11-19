@@ -1,9 +1,16 @@
 const express = require('express');
 const fs = require('node:fs');
 const iconv = require('iconv-lite');
-const { insertData, insertAsignaturas } = require('./db.js');
+const { insertData,
+    insertAsignaturas,
+    insertarPlanAcademico,
+    ingresarSecciones,
+    insertarAlumno_Seccion,
+    insertartipoRectificacion,
+    insertarHorarios,
+    insertarCupos } = require('./db.js');
 const { obtenerDatosDeMatriculados, obtenerDatosDeCursos } = require('./metodosxlsx.js');
-const {insertUsuarios, insertRoles} = require("./db");
+const { insertUsuarios, insertRoles } = require("./db");
 
 const app = express();
 
@@ -16,13 +23,20 @@ const app = express();
 
 app.get('/', async (req, res) => {
     try {
-        const matriculados = obtenerDatosDeMatriculados();
-        await insertData(matriculados);
-        await insertRoles();
-        await insertUsuarios(matriculados);
-        const asignaturas = obtenerDatosDeCursos();
-        await insertAsignaturas(asignaturas);
-        res.send(matriculados);
+        // const data = obtenerDatosDeMatriculados();
+        // await insertData(data);
+        // await insertRoles();
+
+        // await insertartipoRectificacion();
+        // await insertarHorarios();
+        await insertarCupos();
+
+        // await insertUsuarios(data);
+        // // const asignaturas = obtenerDatosDeCursos();
+        // await ingresarSecciones(data);
+        // await insertAsignaturas(data);
+        // await insertarPlanAcademico(data);
+        // await insertarAlumno_Seccion(data);
     } catch (e) {
         res.status(500).json({ msg: e.message });
     }
