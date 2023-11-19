@@ -48,11 +48,11 @@ async function insertData(data) {
             }
 
             let situ_academica = rep_plan_actual >= 2 ? 'observado' : 'regular';
-            let id_usuario = cod_alumno;
+            let id_usuario = null;
 
             const query = 'INSERT IGNORE INTO alumno (cod_alumno,id_usuario, apellido_paterno, apellido_materno, nombre, anio_ingreso, situ_academica, correo, promedio_ponderado) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?)';
             // Reemplaza "columna1", "columna2", "columna3" con los nombres de tus columnas
-
+            console.log()
             await connection.execute(query, [cod_alumno, id_usuario, ape_paterno, ape_materno, nom_alumno, anio_ingreso, situ_academica, coe_alumno, promedio_ponderado]);
             // console.log(++i);
         }

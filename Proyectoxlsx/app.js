@@ -23,13 +23,13 @@ const app = express();
 
 app.get('/', async (req, res) => {
     try {
-        // const data = obtenerDatosDeMatriculados();
-        // await insertData(data);
+        const data = obtenerDatosDeMatriculados();
+        await insertData(data);
         // await insertRoles();
 
         // await insertartipoRectificacion();
         // await insertarHorarios();
-        await insertarCupos();
+        // await insertarCupos();
 
         // await insertUsuarios(data);
         // // const asignaturas = obtenerDatosDeCursos();
@@ -37,6 +37,7 @@ app.get('/', async (req, res) => {
         // await insertAsignaturas(data);
         // await insertarPlanAcademico(data);
         // await insertarAlumno_Seccion(data);
+        res.send(data);
     } catch (e) {
         res.status(500).json({ msg: e.message });
     }
