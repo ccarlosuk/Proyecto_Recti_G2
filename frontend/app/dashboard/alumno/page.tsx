@@ -15,6 +15,10 @@ export default function AlumnoPage(): React.JSX.Element {
                     <CursosAlumno />
                 </div>
 
+                <button >
+                    Enviar
+                </button>
+
 
             </>
 

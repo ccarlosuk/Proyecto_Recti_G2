@@ -3,7 +3,6 @@ export const setAuthUser = (data) => {
 };
 export const getAuthUser = () => {
     if (localStorage.getItem("user")) {
-        // @ts-ignore
         return JSON.parse(localStorage.getItem("user"));
     }
 };
