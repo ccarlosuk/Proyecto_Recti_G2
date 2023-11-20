@@ -25,11 +25,13 @@
     border-top: 1px solid;
 }
 #shared-table-p{
-    background-color: rgb(47, 110, 233);
+    background-color: #6d1115;
     text-align: center;
     font-size: 30px;
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
+    color: white;
+
 }
 /*tr:nth-child(even){background-color: #f2f2f2}*/
 .shared-tr{

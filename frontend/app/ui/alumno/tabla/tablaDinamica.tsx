@@ -67,58 +67,62 @@ export default function DynamicTable ({
     // Función para manejar cambios en el estado del checkbox
     const handleCheckboxChange = (rowIndex: number, checkboxType: string
                                   ) => {
-        // Utiliza la función de retorno de llamada de setCheckedRows para garantizar la actualización
-        setCheckedRows((prevCheckedRows) => {
-            // Copiar el estado actual de las filas marcadas
-            const newCheckedRows = [...prevCheckedRows];
+            // Utiliza la función de retorno de llamada de setCheckedRows para garantizar la actualización
+            setCheckedRows((prevCheckedRows) => {
+                // Copiar el estado actual de las filas marcadas
+                const newCheckedRows = [...prevCheckedRows];
 
-            // Crear una clave única para identificar el checkbox en la fila actual
-            const key = `${rowIndex}_${checkboxType}`;
+                // Crear una clave única para identificar el checkbox en la fila actual
+                const key = `${rowIndex}_${checkboxType}`;
 
-            // Obtener el tipo opuesto del checkbox actual
-            const oppositeType = checkboxType === 'Cambio' ? 'Retiro' : 'Cambio';
-            const oppositeKey = `${rowIndex}_${oppositeType}`;
+                // Obtener el tipo opuesto del checkbox actual
+                const oppositeType = checkboxType === 'Cambio' ? 'Retiro' : 'Cambio';
+                const oppositeKey = `${rowIndex}_${oppositeType}`;
 
-            // Desmarcar el checkbox opuesto si el checkbox actual está marcado
-            const oppositeIndex = newCheckedRows.indexOf(oppositeKey);
-            if (oppositeIndex !== -1) {
-                newCheckedRows.splice(oppositeIndex, 1);
-            }
+                // Desmarcar el checkbox opuesto si el checkbox actual está marcado
+                const oppositeIndex = newCheckedRows.indexOf(oppositeKey);
+                if (oppositeIndex !== -1) {
+                    newCheckedRows.splice(oppositeIndex, 1);
+                }
 
-            // Si está marcado, desmarcarlo; de lo contrario, marcarlo
-            const index = newCheckedRows.indexOf(key);
-            if (index !== -1) {
-                newCheckedRows.splice(index, 1);
-            } else {
-                newCheckedRows.push(key);
-            }
-            // Filtrar las filas seleccionadas basadas en cambios
-            const newSelectedRows = TableData.filter((_, index) =>
-                newCheckedRows.includes(`${index}_Cambio`) || newCheckedRows.includes(`${index}_Retiro`)
-            );
-            //////////////////////////////////////////////////////////////////////
-            // Filtrar las filas seleccionadas basadas en cambios
-            const newSelectedRowsCambio = TableData.filter((_, index) =>
-                newCheckedRows.includes(`${index}_Cambio`)
-            );
-            // Filtrar las filas seleccionadas basadas en Retiros
-            const newSelectedRowsRetiro = TableData.filter((_, index) =>
-                newCheckedRows.includes(`${index}_Retiro`)
-            );
-            setSelectedRowsRetiro(newSelectedRowsRetiro);
-            setSelectedRowsCambio(newSelectedRowsCambio);
-            //////////////////////////////////////////////////////////////////////
+                // Si está marcado, desmarcarlo; de lo contrario, marcarlo
+                const index = newCheckedRows.indexOf(key);
+                if (index !== -1) {
+                    newCheckedRows.splice(index, 1);
+                } else {
+                    // Agregar solo si no excede el límite de 3 filas
+                    if (newCheckedRows.length < 3) {
+                        newCheckedRows.push(key);
+                    } else {
+                        console.log('No se pueden seleccionar más de 3 filas.');
+                    }
+                }
+                // Filtrar las filas seleccionadas basadas en cambios
+                const newSelectedRows = TableData.filter((_, index) =>
+                    newCheckedRows.includes(`${index}_Cambio`) || newCheckedRows.includes(`${index}_Retiro`)
+                );
+                //////////////////////////////////////////////////////////////////////
+                // Filtrar las filas seleccionadas basadas en cambios
+                const newSelectedRowsCambio = TableData.filter((_, index) =>
+                    newCheckedRows.includes(`${index}_Cambio`)
+                );
+                // Filtrar las filas seleccionadas basadas en Retiros
+                const newSelectedRowsRetiro = TableData.filter((_, index) =>
+                    newCheckedRows.includes(`${index}_Retiro`)
+                );
+                setSelectedRowsRetiro(newSelectedRowsRetiro);
+                setSelectedRowsCambio(newSelectedRowsCambio);
+                //////////////////////////////////////////////////////////////////////
 
-            setSelectedRows(newSelectedRows);
+                setSelectedRows(newSelectedRows);
 
-            // Implementar lógica adicional si es necesario
-            console.log(`Checkbox clickeado en la fila ${rowIndex} de tipo ${checkboxType}`);
-            console.log(`Lista de seleccionadas: ${JSON.stringify(newSelectedRows)}`);
+                // Implementar lógica adicional si es necesario
+                console.log(`Checkbox clickeado en la fila ${rowIndex} de tipo ${checkboxType}`);
+                console.log(`Lista de seleccionadas: ${JSON.stringify(newSelectedRows)}`);
 
-            // Devolver el nuevo array de filas marcadas
-            return newCheckedRows;
-        });
-
+                // Devolver el nuevo array de filas marcadas
+                return newCheckedRows;
+            });
 
     };
     // get table row data

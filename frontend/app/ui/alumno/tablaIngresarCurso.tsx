@@ -62,9 +62,10 @@ function tablaIngresarCurso () {
             </button><br/>
             <br/>
 
-            <table border={1} width="90%" cellPadding={10} className='bg-gray-100 '>
+            <table border={1} width="90%" cellPadding={10} className='bg-gray-100 ' >
                 <tbody>
-                    <tr className='bg-blue-600'>
+                    <tr style={{background:'#6d1115',
+                                color:"white"}}>
                         <td>No</td>
                         <th>Codigo de Curso </th>
                         <th>Nombre de Curso</th>
