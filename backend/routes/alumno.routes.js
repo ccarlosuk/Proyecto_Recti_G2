@@ -19,6 +19,13 @@ router.get(
     [usuarioAuth, estudianteAuth],
     AlumnoController.getAlumno
 );
+//ENVIAR SOLICITUD A LA BD
+router.post(
+    "/alumno/rectificacion-solicitud",
+    [usuarioAuth, estudianteAuth],
+    AlumnoController.postEnviarRectificacion
+);
+
 
 //ENVIAR DATOS DE LA RECTIFICACIÓN AL BACKEND
 //router.post();
