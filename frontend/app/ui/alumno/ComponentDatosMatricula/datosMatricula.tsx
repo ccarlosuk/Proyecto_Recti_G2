@@ -1,34 +1,30 @@
 "use client";
-import {useEffect, useRef, useState} from "react";
+import { useEffect, useRef, useState } from "react";
 import { getAuthUser } from "@/src/helper/Storage";
 import axios from "@/app/api/apiR";
-import {TableAlumnoData} from "@/app/lib/fomat-table";
-
-
+import { TableAlumnoData } from "@/app/lib/fomat-table";
 
 export default function DatosMatricula({ onFormChange }) {
-
     const [codigo, setCodigo] = useState("");
     const [apellidos_hook, setApellidos] = useState("");
     const [nombres_hook, setNombres] = useState("");
     const [plan_hook, setPlan] = useState("");
     const [situacion_hook, setSituacion] = useState("");
 
-
-
     const auth = getAuthUser();
 
+    const idAlumno = auth.id;
     const idAlumno = auth.id;
     //const idAlumno = 17200237;
     // console.log("getAuthUser: " + auth);
 
     const [infoAlum, setInfoAlum] = useState({
         loading: true,
-        results: [],
+        results: [""],
         err: null,
     });
 
-    useEffect( () => {
+    useEffect(() => {
         //setInfoAlum({ ...infoAlum, loading: true });
         axios
             .get(`http://localhost:8080/api/alumno/datos-alumno?id=${idAlumno}`)
@@ -45,21 +41,28 @@ export default function DatosMatricula({ onFormChange }) {
                 // Actualiza los estados con los valores iniciales
                 //FUNCIONA!!!!!!!!
                 setCodigo(alumnoData.cod_alumno || "");
-                setApellidos(alumnoData.apellido_paterno + " " + alumnoData.apellido_materno || "");
+                setApellidos(
+                    alumnoData.apellido_paterno +
+                        " " +
+                        alumnoData.apellido_materno || ""
+                );
                 setNombres(alumnoData.nombre || "");
                 setPlan(alumnoData.plan_academico || "");
                 setSituacion(alumnoData.situ_academica || "");
 
                 // Llama a la función proporcionada para informar al componente padre
-                onFormChange({//FUNCIONA!!!!!
+                onFormChange({
+                    //FUNCIONA!!!!!
                     codigo: alumnoData.cod_alumno || "",
-                    apellidos: alumnoData.apellido_paterno + " " + alumnoData.apellido_materno || "",
+                    apellidos:
+                        alumnoData.apellido_paterno +
+                            " " +
+                            alumnoData.apellido_materno || "",
                     nombres: alumnoData.nombre || "",
                     plan: alumnoData.plan_academico || "",
                     situacion: alumnoData.situ_academica || "",
                     // Agrega otros campos según sea necesario
                 });
-
             })
             .catch((err) => {
                 console.log(err);
@@ -72,25 +75,21 @@ export default function DatosMatricula({ onFormChange }) {
         console.log("AXIOS TERMINADO");
     }, []);
 
+    //console.log(JSON.stringify(infoAlum.results));
 
-    console.log(JSON.stringify(infoAlum.results));
-
-         //MAPEAR LOS DATOS
-    const alumnoData:TableAlumnoData[] = infoAlum.results.map((obj) => {
-        return {
-            cod_alumno: obj.cod_alumno,
-            plan_academico: obj.plan_academico,
-            escuela: obj.escuela,
-            nombre: obj.nombre,
-            apellidos: obj.apellido_paterno + obj.apellido_materno,
-            situ_academica: obj.situ_academica,
-            correo: obj.correo,
-        };
-    });
-    //NECESITAS VALIDAR PRIMERO QUE EL ARREGLO NO ESTÉ VACIO
-    if (alumnoData.length > 0) {
-        console.log(alumnoData[0]);
-//        ObtenerDatos();
+    /*     //MAPEAR LOS DATOS
+    if (infoAlum.results[0]) {
+        const alumnoData = infoAlum.results.map((obj) => {
+            return {
+                cod_alumno: obj.cod_alumno,
+                plan_academico: obj.plan_academico,
+                escuela: obj.escuela,
+                nombre: obj.nombre,
+                apellidos: obj.apellido_paterno + obj.apellido_materno,
+                situ_academica: obj.situ_academica,
+                correo: obj.correo,
+            };
+        });
 
     } else {
         console.log("El array alumnoData está vacío");
@@ -136,9 +135,9 @@ export default function DatosMatricula({ onFormChange }) {
                             className="w-32 rounded-lg text-center border-2 bg-sky-100"
                             type="text"
                             value={
-                                codigo
+                                infoAlum.results[0] &&
+                                infoAlum.results[0].cod_alumno
                             }
-                            //onChange={handleCodigoChange}
                             disabled
                         />
                     </div>
@@ -147,9 +146,7 @@ export default function DatosMatricula({ onFormChange }) {
                         <input
                             className="w-32 rounded-lg text-center border-2 bg-sky-100"
                             type="text"
-                            value={
-                                plan_hook
-                            }
+                            value={plan_hook}
                             disabled
                         />
                     </div>
@@ -171,9 +168,8 @@ export default function DatosMatricula({ onFormChange }) {
                         className="w-72 rounded-lg border-2 bg-sky-100"
                         type="text"
                         value={
-                            nombres_hook
+                            infoAlum.results[0] && infoAlum.results[0].nombre
                         }
-
                         disabled
                     />
                 </div>
@@ -182,9 +178,7 @@ export default function DatosMatricula({ onFormChange }) {
                     <input
                         className="w-72 rounded-lg border-2 bg-sky-100"
                         type="text"
-                        value={
-                            apellidos_hook
-                        }
+                        value={apellidos_hook}
                         disabled
                     />
                 </div>
@@ -193,9 +187,7 @@ export default function DatosMatricula({ onFormChange }) {
                     <input
                         className="w-72 rounded-lg border-2 bg-sky-100"
                         type="text"
-                        value={
-                            situacion_hook
-                        }
+                        value={situacion_hook}
                         disabled
                     />
                 </div>
