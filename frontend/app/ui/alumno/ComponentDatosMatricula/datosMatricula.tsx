@@ -6,13 +6,12 @@ import axios from "@/app/api/apiR";
 export default function DatosMatricula() {
     const auth = getAuthUser();
 
-    // const idAlumno = auth.id;
-    const idAlumno = 17200237;
+    const idAlumno = auth.id;
     // console.log("getAuthUser: " + auth);
 
     const [infoAlum, setInfoAlum] = useState({
         loading: true,
-        results: [],
+        results: [""],
         err: null,
     });
 
@@ -37,7 +36,7 @@ export default function DatosMatricula() {
             });
     }, []);
 
-    console.log(JSON.stringify(infoAlum.results));
+    //console.log(JSON.stringify(infoAlum.results));
 
     /*     //MAPEAR LOS DATOS
     if (infoAlum.results[0]) {

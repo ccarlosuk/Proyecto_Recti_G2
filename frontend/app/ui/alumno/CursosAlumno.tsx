@@ -18,9 +18,8 @@ export default function StudentCourse() {
 
     //OBTENER AL USUARIO DESDE LA COOKIES DEL CLIENTE
     const auth = getAuthUser();
-    //const userNameAlumno = auth.username;
-    const userNameAlumno = "patrick.monzon";
-    console.log("getAuthUser: " + auth);
+    const userNameAlumno = auth.username;
+    //console.log("getAuthUser: " + auth);
     const [courses, setCourses] = useState({
         loading: true,
         results: [],
@@ -46,7 +45,7 @@ export default function StudentCourse() {
                 });
             });
     }, [courses.reload]);
-    console.log("lista de cursos: " + courses.results.length);
+    //console.log("lista de cursos: " + courses.results.length);
 
     const TableData: TableDataItem[] = courses.results.map((obj) => {
         return {
@@ -62,11 +61,12 @@ export default function StudentCourse() {
             {courses.loading === false &&
                 courses.err === null &&
                 Array.isArray(courses.results) && (
-                //DynamicTable(TableData, courses.results[0].cod_asignatura)}
-                //DynamicTable(TableData, "Asignaturas Matriculadas",checkedRows,setCheckedRows)}
-                <DynamicTable TableData={TableData}
-                              type="Asignaturas Matriculadas"
-                              />
+                    //DynamicTable(TableData, courses.results[0].cod_asignatura)}
+                    //DynamicTable(TableData, "Asignaturas Matriculadas",checkedRows,setCheckedRows)}
+                    <DynamicTable
+                        TableData={TableData}
+                        type="Asignaturas Matriculadas"
+                    />
                 )}
 
             {courses.loading === false &&
