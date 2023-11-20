@@ -18,8 +18,8 @@ export default function StudentCourse() {
 
     //OBTENER AL USUARIO DESDE LA COOKIES DEL CLIENTE
     const auth = getAuthUser();
-    //const userNameAlumno = auth.username;
-    const userNameAlumno = "patrick.monzon";
+    const userNameAlumno = auth.username;
+    //const userNameAlumno = "patrick.monzon";
     console.log("getAuthUser: " + auth);
     const [courses, setCourses] = useState({
         loading: true,

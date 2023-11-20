@@ -1,13 +1,25 @@
 "use client";
-import { useEffect, useState } from "react";
+import {useEffect, useRef, useState} from "react";
 import { getAuthUser } from "@/src/helper/Storage";
 import axios from "@/app/api/apiR";
+import {TableAlumnoData} from "@/app/lib/fomat-table";
 
-export default function DatosMatricula() {
+
+
+export default function DatosMatricula({ onFormChange }) {
+
+    const [codigo, setCodigo] = useState("");
+    const [apellidos_hook, setApellidos] = useState("");
+    const [nombres_hook, setNombres] = useState("");
+    const [plan_hook, setPlan] = useState("");
+    const [situacion_hook, setSituacion] = useState("");
+
+
+
     const auth = getAuthUser();
 
-    // const idAlumno = auth.id;
-    const idAlumno = 17200237;
+    const idAlumno = auth.id;
+    //const idAlumno = 17200237;
     // console.log("getAuthUser: " + auth);
 
     const [infoAlum, setInfoAlum] = useState({
@@ -16,7 +28,7 @@ export default function DatosMatricula() {
         err: null,
     });
 
-    useEffect(() => {
+    useEffect( () => {
         //setInfoAlum({ ...infoAlum, loading: true });
         axios
             .get(`http://localhost:8080/api/alumno/datos-alumno?id=${idAlumno}`)
@@ -26,6 +38,28 @@ export default function DatosMatricula() {
                     results: resp.data.alumno,
                     loading: false,
                 });
+                const alumnoData = resp.data.alumno[0];
+                //console.log("ALUMNODATA:", alumnoData.cod_alumno);
+                console.log("ALUMNODATA:", alumnoData);
+
+                // Actualiza los estados con los valores iniciales
+                //FUNCIONA!!!!!!!!
+                setCodigo(alumnoData.cod_alumno || "");
+                setApellidos(alumnoData.apellido_paterno + " " + alumnoData.apellido_materno || "");
+                setNombres(alumnoData.nombre || "");
+                setPlan(alumnoData.plan_academico || "");
+                setSituacion(alumnoData.situ_academica || "");
+
+                // Llama a la función proporcionada para informar al componente padre
+                onFormChange({//FUNCIONA!!!!!
+                    codigo: alumnoData.cod_alumno || "",
+                    apellidos: alumnoData.apellido_paterno + " " + alumnoData.apellido_materno || "",
+                    nombres: alumnoData.nombre || "",
+                    plan: alumnoData.plan_academico || "",
+                    situacion: alumnoData.situ_academica || "",
+                    // Agrega otros campos según sea necesario
+                });
+
             })
             .catch((err) => {
                 console.log(err);
@@ -35,26 +69,32 @@ export default function DatosMatricula() {
                     err: "Something Went Wrong",
                 });
             });
+        console.log("AXIOS TERMINADO");
     }, []);
+
 
     console.log(JSON.stringify(infoAlum.results));
 
-    /*     //MAPEAR LOS DATOS
-    if (infoAlum.results[0]) {
-        const alumnoData = infoAlum.results.map((obj) => {
-            return {
-                cod_alumno: obj.cod_alumno,
-                plan_academico: obj.plan_academico,
-                escuela: obj.escuela,
-                nombre: obj.nombre,
-                apellidos: obj.apellido_paterno + obj.apellido_materno,
-                situ_academica: obj.situ_academica,
-                correo: obj.correo,
-            };
-        });
+         //MAPEAR LOS DATOS
+    const alumnoData:TableAlumnoData[] = infoAlum.results.map((obj) => {
+        return {
+            cod_alumno: obj.cod_alumno,
+            plan_academico: obj.plan_academico,
+            escuela: obj.escuela,
+            nombre: obj.nombre,
+            apellidos: obj.apellido_paterno + obj.apellido_materno,
+            situ_academica: obj.situ_academica,
+            correo: obj.correo,
+        };
+    });
+    //NECESITAS VALIDAR PRIMERO QUE EL ARREGLO NO ESTÉ VACIO
+    if (alumnoData.length > 0) {
+        console.log(alumnoData[0]);
+//        ObtenerDatos();
 
-        console.log(alumnoData);
-    } */
+    } else {
+        console.log("El array alumnoData está vacío");
+    }
 
     /*   const dataString = JSON.stringify(alumnoData);
     const dataParseada = JSON.parse(dataString);
@@ -62,6 +102,27 @@ export default function DatosMatricula() {
 
     console.log(`Alumno data: ${JSON.stringify(infoAlumno)}`); */
 
+    // Agrega funciones onChange para cada campo del formulario
+    /*const handleCodigoChange = (event) => {
+        setCodigo(event.target.value);
+        onFormChange({codigo: event.target.value});
+    }*/
+    /*const handleApellidosChange = (event) => {
+        setApellidos(event.target.value);
+        onFormChange({apellidos: event.target.value});
+    }
+    const handleNombresChange = (event) => {
+        setNombres(event.target.value);
+        onFormChange({nombres_page: event.target.value});
+    }
+    const handlePlanChange = (event) => {
+        setPlan(event.target.value);
+        onFormChange({plan: event.target.value});
+    }
+    const handleSituacionChange = (event) => {
+        setSituacion(event.target.value);
+        onFormChange({situacion: event.target.value});
+    }*/
     return (
         <>
             <div className="container grid grid-cols-1 sm:grid-cols-2 ">
@@ -75,9 +136,9 @@ export default function DatosMatricula() {
                             className="w-32 rounded-lg text-center border-2 bg-sky-100"
                             type="text"
                             value={
-                                infoAlum.results[0] &&
-                                infoAlum.results[0].cod_alumno
+                                codigo
                             }
+                            //onChange={handleCodigoChange}
                             disabled
                         />
                     </div>
@@ -87,8 +148,7 @@ export default function DatosMatricula() {
                             className="w-32 rounded-lg text-center border-2 bg-sky-100"
                             type="text"
                             value={
-                                infoAlum.results[0] &&
-                                infoAlum.results[0].plan_academico
+                                plan_hook
                             }
                             disabled
                         />
@@ -111,8 +171,9 @@ export default function DatosMatricula() {
                         className="w-72 rounded-lg border-2 bg-sky-100"
                         type="text"
                         value={
-                            infoAlum.results[0] && infoAlum.results[0].nombre
+                            nombres_hook
                         }
+
                         disabled
                     />
                 </div>
@@ -122,8 +183,7 @@ export default function DatosMatricula() {
                         className="w-72 rounded-lg border-2 bg-sky-100"
                         type="text"
                         value={
-                            infoAlum.results[0] &&
-                            `${infoAlum.results[0].apellido_paterno} ${infoAlum.results[0].apellido_materno}`
+                            apellidos_hook
                         }
                         disabled
                     />
@@ -134,8 +194,7 @@ export default function DatosMatricula() {
                         className="w-72 rounded-lg border-2 bg-sky-100"
                         type="text"
                         value={
-                            infoAlum.results[0] &&
-                            infoAlum.results[0].situ_academica
+                            situacion_hook
                         }
                         disabled
                     />
