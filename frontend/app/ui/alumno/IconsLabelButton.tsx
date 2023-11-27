@@ -71,7 +71,7 @@ export default function IconLabelButtons({ exportData }) {
                     
                     retiros: exportData.filas_retiro,
                     ingresos: exportData.filas_ingreso,
-                    // cambios: exportData.filas_cambio,
+                    cambios: exportData.filas_cambio,
 
                     fecha: fechaActualString(),
                 }

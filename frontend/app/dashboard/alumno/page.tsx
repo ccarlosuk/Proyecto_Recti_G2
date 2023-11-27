@@ -17,9 +17,9 @@ export default function AlumnoPage(): React.JSX.Element {
         plan_page:"",
         situacion_page:"",
         motivo_de_solicitud:"",
-        filas_cambio:[[{}],[{}]], //ingreso //retiro
-        filas_retiro:[{}],
-        filas_ingreso:[{}],
+        filas_cambio:[[{}],[{}]],//retiro //ingreso 
+        filas_retiro:[],
+        filas_ingreso:[],
         fecha: '',
     });
 
@@ -49,7 +49,7 @@ export default function AlumnoPage(): React.JSX.Element {
         }));
     };
 
-    const handleFormChangeCambio = (newData:[]) => {
+    const handleFormChangeCambio = (newData:[[]]) => {
         setDatosFormulario(({
             ...datosFormulario,
             filas_cambio:newData,
@@ -76,8 +76,11 @@ export default function AlumnoPage(): React.JSX.Element {
                     nom: {datosFormulario.nombres_page}
                     plan: {datosFormulario.plan_page}
                     situ: {datosFormulario.situacion_page} */}
-                    filas de cambio: {datosFormulario.filas_cambio.length}
-                    filas de Retiro: {datosFormulario.filas_retiro.length}
+                    {/* filas de cambio: {datosFormulario.filas_cambio.length}
+                    filas de Retiro: {datosFormulario.filas_retiro.length} */}
+                    filas de cambio (RETIRO): {datosFormulario.filas_cambio[0].length}
+                    filas de cambio (INGRESO): {datosFormulario.filas_cambio[1].length}
+                    tamanio: {datosFormulario.filas_cambio.length}
                 </h1>
 
             </>

@@ -7,8 +7,7 @@ const bcrypt = require("bcryptjs");
 const createAccessToken = require("../lib/jwt");
 const fs = require("fs");
 const XLSX = require('xlsx');
-const { retiroFormato, ingresoFormato } = require("../helpers/metodosTranformar");
-const { RectiRetiros, RectiIngresos } = require("../helpers/metodosRectificacion");
+const { RectiRetiros, RectiIngresos, RectiCambios } = require("../helpers/metodosRectificacion");
 
 const AlumnoController = {
     //GET
@@ -96,7 +95,8 @@ const AlumnoController = {
 
         const jsonData = [req.body]; // Suponiendo que estás enviando el JSON en el cuerpo de la solicitud POST
         console.log("JSON DATA",jsonData[0]);
-        console.log("CURSOS A RETIRARSE: ",jsonData[0].retiros);
+        console.log("CURSOS A RETIRARSE: ",jsonData[0].cambios[0][0]);
+        console.log("CURSOS A INGRESAR: ",jsonData[0].cambios[1][0]);
         
         // //vector de objetos de los cursos
         // const cursosRetiro = jsonData[0].retiros;
@@ -105,11 +105,12 @@ const AlumnoController = {
         
         const filePathRetiros = './excel/rectiRetiros.xlsx'; // Ruta al archivo Excel
         const filePathIngresos = './excel/rectiIngresos.xlsx'; 
-
+        const filePathCambios = './excel/rectiCambios.xlsx';
 
         const mensaje = {
             respuesta1:"",
             respuesta2:"",
+            respuesta3:"",
         };
 
         if(jsonData[0].retiros.length > 0 ){
@@ -120,6 +121,11 @@ const AlumnoController = {
         if(jsonData[0].ingresos.length > 0 ){
             RectiIngresos(filePathIngresos,jsonData);
             mensaje.respuesta2 = 'Rectificaciones de Ingreso agregados correctamente al archivo Excel';      
+        }
+
+        if(jsonData[0].cambios[0].length > 0 ){
+            RectiCambios(filePathCambios,jsonData);
+            mensaje.respuesta3 = 'Rectificaciones de Cambio agregados correctamente al archivo Excel';      
         }
 
         res.send(mensaje);

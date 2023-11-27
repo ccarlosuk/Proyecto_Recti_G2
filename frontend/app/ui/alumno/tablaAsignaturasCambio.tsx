@@ -8,13 +8,83 @@ import useDeepCompareEffect from 'use-deep-compare-effect';
 
 
 export default function DetalleCursoTable ({rowData, type, cursosCambio}){
+    
 
+    //matriz que se devuelve al page alumno
+    const [miMatriz, setMiMatriz] = useState([[{}],[{}]]);
 
+    // const dataIngreso ={
+    //     cod: "",
+    //     name: "",
+    //     opc1: "",
+    //     opc2: "",
+    //     estado:"",
+    // }
+    // const [ingreso, setIngreso] = useState([
+    //     dataIngreso,
+    //     dataIngreso,
+    //     dataIngreso,
+    // ]);
+    const [ingreso, setIngreso] = useState([
+        {
+            cod: "",
+            name: "",
+            opc1: "",
+            opc2: "",
+            estado:"",
+        },
+        {
+            cod: "",
+            name: "",
+            opc1: "",
+            opc2: "",
+            estado:"",
+        },
+        {
+            cod: "",
+            name: "",
+            opc1: "",
+            opc2: "",
+            estado:"",
+        },
+    ]);
+
+    
     useDeepCompareEffect(() => {
-        console.log("rowDataCambio: ", rowData);
-        cursosCambio(rowData);
-    }, [rowData]);
+        
+        setMiMatriz([rowData,ingreso]);
+        cursosCambio(miMatriz);
 
+        console.log("MatrizCambio: ", miMatriz);
+        console.log("matriz: ", miMatriz[0].length,"rowdata: ", rowData.length);
+    }, [rowData,miMatriz]);//[changehandle2]);
+
+
+    // useDeepCompareEffect(() => {
+    //     console.log("MatrizCambio UseDeepCompareEffect: ", miMatriz);
+    //     console.log("matriz: ", miMatriz[0].length,"rowdata: ", rowData.length);
+
+    //     if (miMatriz.length > rowData.length) {
+    //         const idsRowData = new Set(rowData.map(item => item.cod_asignatura));
+    //         console.log("idsRowData: ", idsRowData);
+    //         //const nuevaMatriz = miMatriz.filter(item => idsRowData.has(item.cod_asignatura));
+    //         //cursosCambio(nuevaMatriz);
+    //     }
+    // },[rowData]);
+
+    const changehandle2 = (e, index) => {
+
+        let ingresoModificado = [...ingreso]; // Hacer una copia del estado actual
+        ingresoModificado[index].cod = rowData[index].cod_asignatura; // Modificar el cod del primer objeto
+        ingresoModificado[index].name = rowData[index].nombre; // Modificar el name del primer objeto
+        ingresoModificado[index][e.target.name] = e.target.value; ; // Modificar el opc1 del primer objeto
+        setIngreso(ingresoModificado); // Actualizar el estado
+        setMiMatriz([rowData,ingreso]);
+        //cursosCambio(miMatriz);
+        //console.log("MatrizCambio: ", miMatriz);
+        
+    };
+    
     // Encabezados de la nueva tabla
     const headers = ["Código del Curso", "Nombre", "Ciclo", "Número de Grupo", "Ingreso Opción 1", "Ingreso Opción 2"];
     const column: string[] = rowData && rowData.length > 0 ? Object.keys(rowData[0]) : [];
@@ -65,7 +135,14 @@ export default function DetalleCursoTable ({rowData, type, cursosCambio}){
                                     noValidate
                                     autoComplete="off"
                                 >
-                                    <TextField id="standard-basic" label="Opc 1" variant="standard" />
+                                    <TextField 
+                                        id="standard-basic" 
+                                        label="Opc 1" 
+                                        variant="standard"
+                                        name = 'opc1'
+                                        value = {ingreso[index].opc1}
+                                        onChange={(e) => changehandle2(e, index)} 
+                                    />
                                 </Box>
 
                             </td>
@@ -78,7 +155,14 @@ export default function DetalleCursoTable ({rowData, type, cursosCambio}){
                                     noValidate
                                     autoComplete="off"
                                 >
-                                    <TextField id="standard-basic" label="Opc 2" variant="standard" />
+                                    <TextField 
+                                        id="standard-basic" 
+                                        label="Opc 2" 
+                                        variant="standard" 
+                                        name = 'opc2'
+                                        value = {ingreso[index].opc2}
+                                        onChange={(e) => changehandle2(e, index)}
+                                    />
                                 </Box>
                             </td>
                         </tr>
