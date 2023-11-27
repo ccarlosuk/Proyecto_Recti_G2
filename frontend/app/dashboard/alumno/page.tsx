@@ -78,9 +78,9 @@ export default function AlumnoPage(): React.JSX.Element {
                     situ: {datosFormulario.situacion_page} */}
                     {/* filas de cambio: {datosFormulario.filas_cambio.length}
                     filas de Retiro: {datosFormulario.filas_retiro.length} */}
-                    filas de cambio (RETIRO): {datosFormulario.filas_cambio[0].length}
+                    {/* filas de cambio (RETIRO): {datosFormulario.filas_cambio[0].length}
                     filas de cambio (INGRESO): {datosFormulario.filas_cambio[1].length}
-                    tamanio: {datosFormulario.filas_cambio.length}
+                    tamanio: {datosFormulario.filas_cambio.length} */}
                 </h1>
 
             </>
