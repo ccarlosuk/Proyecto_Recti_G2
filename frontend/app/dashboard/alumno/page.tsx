@@ -16,10 +16,14 @@ export default function AlumnoPage(): React.JSX.Element {
         nombres_page:"",
         plan_page:"",
         situacion_page:"",
+        motivo_de_solicitud:"",
+        filas_cambio:[[{}],[{}]], //ingreso //retiro
+        filas_retiro:[{}],
+        filas_ingreso:[{}],
         fecha: '',
     });
 
-    const handleFormChange = (newData: { codigo: any; apellidos: any; nombres: any; plan: any; situacion: any; }) => {
+    const handleFormChange = (newData) => {
         setDatosFormulario(({
             ...datosFormulario,
             codigo_alumno: newData.codigo,
@@ -29,25 +33,52 @@ export default function AlumnoPage(): React.JSX.Element {
             situacion_page: newData.situacion,
         }));
     };
+    
+
+    const handleFormChangeRetiro = (newData:[]) => {
+        setDatosFormulario(({
+            ...datosFormulario,
+            filas_retiro:newData,
+        }));
+    };
+
+    const handleFormChangeIngreso = (newData:[]) => {
+        setDatosFormulario(({
+            ...datosFormulario,
+            filas_ingreso:newData,
+        }));
+    };
+
+    const handleFormChangeCambio = (newData:[]) => {
+        setDatosFormulario(({
+            ...datosFormulario,
+            filas_cambio:newData,
+        }));
+    };
     //-----------------------------------------------------------------
 
     return (
             <>
                 <DatosMatricula onFormChange={handleFormChange}  />
-                <h1>
-                    cod: {datosFormulario.codigo_alumno}
-                    ape: {datosFormulario.apellidos_page}
-                    nom: {datosFormulario.nombres_page}
-                    plan: {datosFormulario.plan_page}
-                    situ: {datosFormulario.situacion_page}
-                </h1>
+
 
                 <div className="container-fluid">
-                    <CursosAlumno />
+                    <CursosAlumno cursosCambio = {handleFormChangeCambio} 
+                    cursosIngreso = {handleFormChangeIngreso}
+                    cursosRetiro = {handleFormChangeRetiro} />
                     <div className="flex items-center justify-end p-4" style = {{marginRight: 90}}>
                         <IconLabelButtons exportData={datosFormulario}  />
                     </div>
                 </div>
+                <h1>
+                    {/* cod: {datosFormulario.codigo_alumno}
+                    ape: {datosFormulario.apellidos_page}
+                    nom: {datosFormulario.nombres_page}
+                    plan: {datosFormulario.plan_page}
+                    situ: {datosFormulario.situacion_page} */}
+                    filas de cambio: {datosFormulario.filas_cambio.length}
+                    filas de Retiro: {datosFormulario.filas_retiro.length}
+                </h1>
 
             </>
 

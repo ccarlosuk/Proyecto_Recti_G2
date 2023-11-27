@@ -13,7 +13,7 @@ import { TableDataItem } from "@/app/lib/fomat-table";
 import "./DynamicTable.css";
 import RadioButtons from "@/app/ui/alumno/buttonGroup"; // Importar el archivo de estilos CSS
 
-export default function StudentCourse() {
+export default function StudentCourse({cursosCambio,cursosIngreso,cursosRetiro}) {
     //let { code } = useParams();
 
     //OBTENER AL USUARIO DESDE LA COOKIES DEL CLIENTE
@@ -63,7 +63,9 @@ export default function StudentCourse() {
                 Array.isArray(courses.results) && (
                     //DynamicTable(TableData, courses.results[0].cod_asignatura)}
                     //DynamicTable(TableData, "Asignaturas Matriculadas",checkedRows,setCheckedRows)}
-                    <DynamicTable
+                    <DynamicTable cursosCambio = {cursosCambio}
+                     cursosRetiro = {cursosRetiro}
+                     cursosIngreso = {cursosIngreso}
                         TableData={TableData}
                         type="Asignaturas Matriculadas"
                     />

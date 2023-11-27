@@ -162,7 +162,7 @@ const UsuarioController = {
   logout: async (req, res) => {
     res.cookie("token", "", {
       httpOnly: true,
-      secure: true,
+      secure: false,
       expires: new Date(0),
     });
     return res.sendStatus(200);

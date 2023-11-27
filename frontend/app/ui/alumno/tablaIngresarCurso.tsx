@@ -1,34 +1,59 @@
 import React from 'react'
 import {useState} from 'react';
+import useDeepCompareEffect from 'use-deep-compare-effect';
 
 
-function tablaIngresarCurso () {
-    const [inputarr,
-        setInputarr] = useState([])
+function tablaIngresarCurso ({cursosIngreso}) {
+    const [inputarr,setInputarr] = useState([]);
 
-    const [inputdata,
-        SetInputdata] = useState({name: "", rollNo: ""})
+    const [inputdata,SetInputdata] = useState(
+        {
+            name: "",
+            rollNo: "",
+            opc1: "",
+            opc2: "",
+        });
+
+    useDeepCompareEffect(() => {
+        console.log("rowDataIngreso: ", inputarr);
+        cursosIngreso(inputarr);
+    }, [inputarr]);
 
     function changehandle(e) {
-
-        SetInputdata({
-            ...inputdata,
-            [e.target.name]: e.target.value
-        })
-
+        SetInputdata(
+            {
+                ...inputdata,
+                [e.target.name]: e.target.value
+            });
     }
 
-    let {name, rollNo} = inputdata;
+    function changehandleNumber(e) {
+        const value = e.target.value;
+        if(value.length <= 1){
+            SetInputdata(
+                {
+                    ...inputdata,
+                    [e.target.name]: e.target.value
+                });
+        }
+        
+    }
+
+    let {name,opc1, opc2, rollNo} = inputdata;
     function changhandle() {
         setInputarr([
-            ...inputarr, {
+            ...inputarr, 
+            {
                 name,
-                rollNo
+                rollNo,
+                opc1,
+                opc2,
             }
-        ])
+        ]);
 
-        console.log(inputdata, "input data what we Enter")
-        SetInputdata({name: "", rollNo: ""})
+        console.log(inputdata, "input data what we Enter");
+        console.log(inputarr, "arreglo de datos");
+        SetInputdata({ ...inputdata, name: "", rollNo: "", opc1: "", opc2: ""});
 
     }
     let delethandle =(i)=>{
@@ -58,6 +83,26 @@ function tablaIngresarCurso () {
                 onChange={changehandle}
                 placeholder="Digite Nombre curso"
                 className=' border-r-gray-600 rounded-lg'/>
+            <div className='grid-cols-1 sm:grid-cols-2'>
+            <label> Grupo a ingresar </label>
+              <input
+                type="number"
+                autoComplete='off'
+                name='opc1'
+                value={inputdata.opc1}
+                onChange={changehandleNumber}
+                placeholder="Opc1"
+                className=' border-r-gray-600 rounded-lg'/>
+            <label> Grupo a ingresar segunda opcion </label>
+              <input
+                type="number"
+                autoComplete='off'
+                name='opc2'
+                value={inputdata.opc2}
+                onChange={changehandleNumber}
+                placeholder="Opc2"
+                className=' border-r-gray-600 rounded-lg'/>
+            </div>
             <button onClick={changhandle}  className='border w-20 my-5 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg'>Agregar
             </button><br/>
             <br/>
@@ -69,6 +114,8 @@ function tablaIngresarCurso () {
                         <td>No</td>
                         <th>Codigo de Curso </th>
                         <th>Nombre de Curso</th>
+                        <th>Opcion 1</th>
+                        <th>Opcion 2</th>
                         <th className='text-left'>Opciones</th>
                     </tr>
                     {inputarr.length < 1 ?
@@ -81,6 +128,8 @@ function tablaIngresarCurso () {
                                 <td>{ind + 1}</td>
                                 <td className='text-center'>{info.name}</td>
                                 <td className='text-center'>{info.rollNo}</td>
+                                <td className='text-center'>{info.opc1}</td>
+                                <td className='text-center'>{info.opc2}</td>
                                 <td><button onClick={()=>delethandle(ind)} className='border w-20 my-0 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg'  >Delete</button></td>
                             </tr>
                         )

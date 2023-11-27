@@ -13,4 +13,7 @@ router.post('/login',[
     //check('rol', 'No es un rol válido').isIn(['ADMIN_ROLE','USER_ROLE']),
     validarCampos //Ejecutar el middleware para revisar los errores
 ],UsuarioController.login );
+
+router.post('/logout',UsuarioController.logout);
+
 module.exports = router;

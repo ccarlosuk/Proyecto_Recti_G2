@@ -3,8 +3,11 @@ import { useEffect, useRef, useState } from "react";
 import { getAuthUser } from "@/src/helper/Storage";
 import axios from "@/app/api/apiR";
 import { TableAlumnoData } from "@/app/lib/fomat-table";
+import {useRouter} from "next/navigation";
 
 export default function DatosMatricula({ onFormChange }) {
+    const router = useRouter();
+
     const [codigo, setCodigo] = useState("");
     const [apellidos_hook, setApellidos] = useState("");
     const [nombres_hook, setNombres] = useState("");
@@ -13,8 +16,11 @@ export default function DatosMatricula({ onFormChange }) {
 
     const auth = getAuthUser();
 
-    const idAlumno = auth.id;
-    const idAlumno = auth.id;
+    if(!auth?.id){
+        window.location.href = '/login';
+
+    }
+    const idAlumno = auth.id
     //const idAlumno = 17200237;
     // console.log("getAuthUser: " + auth);
 

@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import "@/app/ui/alumno/tabla/Tabla.css";
+import useDeepCompareEffect from 'use-deep-compare-effect';
 
-export default function tablaAsignaturasRetiro ({rowData, type}){
-    console.log(rowData);
+export default function TablaAsignaturasRetiro ({rowData, type, cursosRetiro}){
+    // console.log(rowData);
 
-    if (!rowData) {
-        return null; // Si no hay datos, no mostrar la tabla
-    }
+    useDeepCompareEffect(() => {
+        console.log("rowDataRetiro: ", rowData);
+        cursosRetiro(rowData);
+    }, [rowData]);
 
     // Encabezados de la nueva tabla
     const headers = ["Código del Curso", "Nombre", "Ciclo", "Número de Grupo"];

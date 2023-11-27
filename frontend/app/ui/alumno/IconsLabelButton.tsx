@@ -67,24 +67,12 @@ export default function IconLabelButtons({ exportData }) {
                     nombres: exportData.nombres_page,
                     plan_de_estudio: exportData.plan_page,
                     situacion: exportData.situacion_page,
-                    motivo_solicitud: "Cambio",
-                    ingresos: [
-                        {
-                            codigo_curso: "cod_curso",
-                            nombre: "",
-                            grupo_a_ingresar: "",
-                            grupo_a_ingresar_2daOp: "",
-                            procede: "",
-                        },
-                    ],
-                    retiros: [
-                        {
-                            codigo_curso_retiro: "",
-                            nombre_retiro: "",
-                            grupo_del_retiro: "",
-                            procede: "",
-                        },
-                    ],
+                    motivo_solicitud: "SALUD",
+                    
+                    retiros: exportData.filas_retiro,
+                    ingresos: exportData.filas_ingreso,
+                    // cambios: exportData.filas_cambio,
+
                     fecha: fechaActualString(),
                 }
             )
@@ -179,7 +167,9 @@ export default function IconLabelButtons({ exportData }) {
 
     return (
         <Stack direction="row" spacing={2}>
-            <Button variant="outlined" startIcon={<DeleteIcon />}>
+            <Button variant="outlined" startIcon={<DeleteIcon />}
+                    sx={{ color: '#6d1115', borderColor: '#6d1115' , '&:hover': { backgroundColor: '#e3a8aa' } }}
+            >
                 Borrar
             </Button>
             <Button
@@ -187,6 +177,7 @@ export default function IconLabelButtons({ exportData }) {
                 onClick={abrirModal}
                 variant="contained"
                 endIcon={<SendIcon />}
+                sx={{ backgroundColor: '#6d1115', '&:hover': { backgroundColor: '#b6121a' } }}
             >
                 Enviar
             </Button>
@@ -208,7 +199,8 @@ export default function IconLabelButtons({ exportData }) {
                                     e.preventDefault();
                                     EnviarFormulario(e);
                                 }}
-                                className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-500 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm"
+                                className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm"
+                                style = {{backgroundColor:'#6d1115'}}
                             >
                                 Enviar
                             </button>

@@ -1,17 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect, useMemo } from 'react';
 import "@/app/ui/alumno/tabla/Tabla.css";
-import Tabla from "@/app/lib/fomat-table";
 
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 
-export default function DetalleCursoTable ({rowData, type}){
-    console.log(rowData);
+import useDeepCompareEffect from 'use-deep-compare-effect';
 
-    if (!rowData) {
-        return null; // Si no hay datos, no mostrar la tabla
-    }
 
+export default function DetalleCursoTable ({rowData, type, cursosCambio}){
+
+
+    useDeepCompareEffect(() => {
+        console.log("rowDataCambio: ", rowData);
+        cursosCambio(rowData);
+    }, [rowData]);
 
     // Encabezados de la nueva tabla
     const headers = ["Código del Curso", "Nombre", "Ciclo", "Número de Grupo", "Ingreso Opción 1", "Ingreso Opción 2"];

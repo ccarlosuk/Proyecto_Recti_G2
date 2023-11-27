@@ -3,6 +3,38 @@ export default function fechaActualString() {
     return new Date().toISOString().split('T')[0];
 }
 
+
+
+export function Formato (datosFormulario) {
+    if (datosFormulario.estado === "cambio"){
+        return {
+            
+            //         codigo_curso: "",
+            //         nombre: "",
+            //         grupo_a_ingresar: "",
+            //         grupo_a_ingresar_2daOp: "",
+            //         procede: "",
+            //     
+            
+        }
+    }
+    if (datosFormulario.estado === "retiro"){
+        return {
+            codigo_curso_retiro: "",
+            nombre_retiro: "",
+            grupo_del_retiro: "",
+            procede: "",
+        }
+    }
+    if (datosFormulario.estado === "ingreso"){
+
+    }
+}
+
+
+
+
+
 /*
 export function getCurrentDate(separator=''){
 
