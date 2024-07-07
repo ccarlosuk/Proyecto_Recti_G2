@@ -7,169 +7,170 @@ import TextField from '@mui/material/TextField';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 
 
-export default function DetalleCursoTable ({rowData, type, cursosCambio}){
-    
 
-    //matriz que se devuelve al page alumno
-    const [miMatriz, setMiMatriz] = useState([[{}],[{}]]);
 
-    // const dataIngreso ={
-    //     cod: "",
-    //     name: "",
-    //     opc1: "",
-    //     opc2: "",
-    //     estado:"",
-    // }
-    // const [ingreso, setIngreso] = useState([
-    //     dataIngreso,
-    //     dataIngreso,
-    //     dataIngreso,
-    // ]);
-    const [ingreso, setIngreso] = useState([
-        {
-            cod: "",
-            name: "",
-            opc1: "",
-            opc2: "",
-            estado:"",
-        },
-        {
-            cod: "",
-            name: "",
-            opc1: "",
-            opc2: "",
-            estado:"",
-        },
-        {
-            cod: "",
-            name: "",
-            opc1: "",
-            opc2: "",
-            estado:"",
-        },
-    ]);
 
-    
+/*export default function DetalleCursoTable({ rowData, type, cursosCambio }) {
+    const [miMatriz, setMiMatriz] = useState([[{}], [{}]]);
+    const [ingreso, setIngreso] = useState(Array(3).fill({
+        cod: "",
+        name: "",
+        opc1: "",
+        opc2: "",
+        motivo: "", // Añadido motivo aquí
+        estado: "",
+    }));
+
     useDeepCompareEffect(() => {
-        
-        setMiMatriz([rowData,ingreso]);
-        cursosCambio(miMatriz);
-
-        console.log("MatrizCambio: ", miMatriz);
-        console.log("matriz: ", miMatriz[0].length,"rowdata: ", rowData.length);
-    }, [rowData,miMatriz]);//[changehandle2]);
-
-
-    // useDeepCompareEffect(() => {
-    //     console.log("MatrizCambio UseDeepCompareEffect: ", miMatriz);
-    //     console.log("matriz: ", miMatriz[0].length,"rowdata: ", rowData.length);
-
-    //     if (miMatriz.length > rowData.length) {
-    //         const idsRowData = new Set(rowData.map(item => item.cod_asignatura));
-    //         console.log("idsRowData: ", idsRowData);
-    //         //const nuevaMatriz = miMatriz.filter(item => idsRowData.has(item.cod_asignatura));
-    //         //cursosCambio(nuevaMatriz);
-    //     }
-    // },[rowData]);
+        const nuevaMatriz = [rowData, ingreso];
+        setMiMatriz(nuevaMatriz);
+        cursosCambio(nuevaMatriz);
+    }, [rowData, ingreso]);
 
     const changehandle2 = (e, index) => {
-
-        let ingresoModificado = [...ingreso]; // Hacer una copia del estado actual
-        ingresoModificado[index].cod = rowData[index].cod_asignatura; // Modificar el cod del primer objeto
-        ingresoModificado[index].name = rowData[index].nombre; // Modificar el name del primer objeto
-        ingresoModificado[index][e.target.name] = e.target.value; ; // Modificar el opc1 del primer objeto
-        setIngreso(ingresoModificado); // Actualizar el estado
-        setMiMatriz([rowData,ingreso]);
-        //cursosCambio(miMatriz);
-        //console.log("MatrizCambio: ", miMatriz);
-        
+        const { name, value } = e.target;
+        const updatedIngreso = [...ingreso];
+        updatedIngreso[index] = {
+            ...updatedIngreso[index],
+            [name]: value,
+            cod: rowData[index]?.cod_asignatura || updatedIngreso[index].cod,
+            name: rowData[index]?.nombre || updatedIngreso[index].name,
+        };
+        setIngreso(updatedIngreso);
     };
-    
-    // Encabezados de la nueva tabla
-    const headers = ["Código del Curso", "Nombre", "Ciclo", "Número de Grupo", "Ingreso Opción 1", "Ingreso Opción 2"];
-    const column: string[] = rowData && rowData.length > 0 ? Object.keys(rowData[0]) : [];
 
-    let x=0;
-    const additionalHeaders = ["Opcion 1", "Opcion 2"]; // Nuevos encabezados
+    const headers = ["Código del Curso", "Nombre", "Ciclo", "Número de Grupo", "Ingreso Opción 1", "Ingreso Opción 2", "Motivo"]; // Añadido "Motivo"
+    const column = rowData && rowData.length > 0 ? Object.keys(rowData[0]) : [];
+    let x = 0;
 
     return (
-        <>
-            <section className="sec">
-                <div id="shared-table-p">
-                    {typeof type === "string" ? type.charAt(0).toUpperCase() + type.slice(1) : ""}
-                </div>
-                <table className="shared-table" id="myTable">
-                    <thead>
-                       <tr className="shared-tr">
-                           <th key="index" className="shared-th"></th>
-                           {/* Encabezado vacío para índice */}
-                           {column.map((data) => (
-                               <th key={data} className="shared-th">
-                                   {data}
-                               </th>
-                           ))}
-                           {additionalHeaders.map((header) => (
-                               <th key={header} className="shared-th">
-                                   {header}
-                               </th>
-                           ))}
-                       </tr>
-                    </thead>
-                    <tbody>
-                    {rowData.map((row,index) => (
+        <section className="sec">
+            <div id="shared-table-p">
+                {typeof type === "string" ? type.charAt(0).toUpperCase() + type.slice(1) : ""}
+            </div>
+            <table className="shared-table" id="myTable">
+                <thead>
+                    <tr className="shared-tr">
+                        <th key="index" className="shared-th"></th>
+                        {column.map((data) => (
+                            <th key={data} className="shared-th">{data}</th>
+                        ))}
+                        {headers.slice(4).map((header) => (
+                            <th key={header} className="shared-th">{header}</th>
+                        ))}
+                    </tr>
+                </thead>
+                <tbody>
+                    {rowData.map((row, index) => (
                         <tr key={x++} className="shared-tr">
-                            <td key={x++} className="shared-td">
-                                {index + 1}
-                            </td>
+                            <td key={x++} className="shared-td">{index + 1}</td>
                             {column.map((v) => (
+                                <td key={x++} className="shared-td">{row[v]}</td>
+                            ))}
+                            {["opc1", "opc2", "motivo"].map((field) => (
                                 <td key={x++} className="shared-td">
-                                    {row[v]}
+                                    <Box component="form" sx={{ '& > :not(style)': { m: 1, width: '5ch' } }} noValidate autoComplete="off">
+                                        <TextField
+                                            id="standard-basic"
+                                            label={field === "motivo" ? "Motivo" : `Opc ${field.slice(-1)}`}
+                                            variant="standard"
+                                            name={field}
+                                            value={ingreso[index][field]}
+                                            onChange={(e) => changehandle2(e, index)}
+                                        />
+                                    </Box>
                                 </td>
                             ))}
-                            <td key={x++} className="shared-td">
-                                <Box
-                                    component="form"
-                                    sx={{
-                                        '& > :not(style)': { m: 1, width: '5ch' },
-                                    }}
-                                    noValidate
-                                    autoComplete="off"
-                                >
-                                    <TextField 
-                                        id="standard-basic" 
-                                        label="Opc 1" 
-                                        variant="standard"
-                                        name = 'opc1'
-                                        value = {ingreso[index].opc1}
-                                        onChange={(e) => changehandle2(e, index)} 
-                                    />
-                                </Box>
-
-                            </td>
-                            <td key={x++} className="shared-td">
-                                <Box
-                                    component="form"
-                                    sx={{
-                                        '& > :not(style)': { m: 1, width: '5ch' },
-                                    }}
-                                    noValidate
-                                    autoComplete="off"
-                                >
-                                    <TextField 
-                                        id="standard-basic" 
-                                        label="Opc 2" 
-                                        variant="standard" 
-                                        name = 'opc2'
-                                        value = {ingreso[index].opc2}
-                                        onChange={(e) => changehandle2(e, index)}
-                                    />
-                                </Box>
-                            </td>
                         </tr>
                     ))}
-                    </tbody>
-                </table>
-            </section>
-        </>
+                </tbody>
+            </table>
+        </section>
     );
-};
+}*/
+
+
+
+
+export default function DetalleCursoTable({ rowData, type, cursosCambio }) {
+    const [miMatriz, setMiMatriz] = useState([[{}], [{}]]);
+    const [cambio, setCambio] = useState(Array(3).fill({
+        cod_asignatura: "",
+        nombre_asignatura: "",
+        opc1: "",
+        opc2: "",
+        motivo: "",
+        estado: "",
+    }));
+
+    useDeepCompareEffect(() => {
+        const nuevaMatriz = [rowData, cambio];
+        setMiMatriz(nuevaMatriz);
+        cursosCambio(nuevaMatriz);
+    }, [rowData, cambio]);
+
+    const changehandle2 = (e, index) => {
+        const { name, value } = e.target;
+        const updatedCambio = [...cambio];
+        updatedCambio[index] = {
+            ...updatedCambio[index],
+            [name]: value,
+            cod_asignatura: rowData[index]?.cod_asignatura || updatedCambio[index].cod_asignatura,
+            nombre_asignatura: rowData[index]?.nombre_asignatura || updatedCambio[index].nombre_asignatura,
+            tipo: "cambio"  // Añadir el tipo
+        };
+        setCambio(updatedCambio);
+    };
+
+    const headers = ["Código del Curso", "Nombre", "Ciclo", "Número de Grupo", "Ingreso Opción 1", "Ingreso Opción 2", "Motivo"];
+    const column = rowData && rowData.length > 0 ? Object.keys(rowData[0]) : [];
+    let x = 0;
+
+    return (
+        <section className="sec">
+            <div id="shared-table-p">
+                {typeof type === "string" ? type.charAt(0).toUpperCase() + type.slice(1) : ""}
+            </div>
+            <table className="shared-table" id="myTable">
+                <thead>
+                    <tr className="shared-tr">
+                        <th key="index" className="shared-th"></th>
+                        {column.map((data) => (
+                            <th key={data} className="shared-th">{data}</th>
+                        ))}
+                        {headers.slice(4).map((header) => (
+                            <th key={header} className="shared-th">{header}</th>
+                        ))}
+                    </tr>
+                </thead>
+                <tbody>
+                    {rowData.map((row, index) => (
+                        <tr key={x++} className="shared-tr">
+                            <td key={x++} className="shared-td">{index + 1}</td>
+                            {column.map((v) => (
+                                <td key={x++} className="shared-td">{row[v]}</td>
+                            ))}
+                            {["opc1", "opc2", "motivo"].map((field) => (
+                                <td key={x++} className="shared-td">
+                                    <Box component="form" sx={{ '& > :not(style)': { m: 1, width: '5ch' } }} noValidate autoComplete="off">
+                                        <TextField
+                                            id="standard-basic"
+                                            label={field === "motivo" ? "Motivo" : `Opc ${field.slice(-1)}`}
+                                            variant="standard"
+                                            name={field}
+                                            value={cambio[index][field]}
+                                            onChange={(e) => changehandle2(e, index)}
+                                        />
+                                    </Box>
+                                </td>
+                            ))}
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </section>
+    );
+}
+
+
+
