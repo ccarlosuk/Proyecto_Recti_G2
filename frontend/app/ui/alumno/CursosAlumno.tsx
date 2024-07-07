@@ -63,10 +63,11 @@ export default function StudentCourse({cursosCambio,cursosIngreso,cursosRetiro})
                 Array.isArray(courses.results) && (
                     //DynamicTable(TableData, courses.results[0].cod_asignatura)}
                     //DynamicTable(TableData, "Asignaturas Matriculadas",checkedRows,setCheckedRows)}
-                    <DynamicTable cursosCambio = {cursosCambio}
+                    <DynamicTable 
+                     cursosCambio = {cursosCambio}
                      cursosRetiro = {cursosRetiro}
                      cursosIngreso = {cursosIngreso}
-                        TableData={TableData}
+                     TableData={TableData}
                         type="Asignaturas Matriculadas"
                     />
                 )}
